@@ -1,5 +1,9 @@
 <?php
 
-return function () {
-    echo 'Hello, world!';
+require_once "listeners/DiscussionWasViewed.php";
+
+use Illuminate\Contracts\Events\Dispatcher;
+
+return function (Dispatcher $events) {
+    $events->subscribe(DiscussionWasViewed::class);
 };
