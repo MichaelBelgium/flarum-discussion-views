@@ -21,7 +21,8 @@ class AddAssets
         if($event->isForum())
         {
             $event->addAssets([
-                __DIR__.'/../js/forum/dist/extension.js'
+                __DIR__.'/../js/forum/dist/extension.js',
+                __DIR__.'/../less/extension.less'
             ]);
             $event->addBootstrapper('michaelbelgium/flarum-discussion-views/main');
         }

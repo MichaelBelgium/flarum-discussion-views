@@ -1,0 +1,43 @@
+.item-discussion-views {
+  font-size: 14px;
+  padding-left: 21px;
+  padding-right: 60px;
+  float:right;
+  margin-top: -12px;
+}
+
+@media (min-width: 768px)
+{
+  .item-discussion-views:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f06e";
+    float: left;
+    margin-left: -21px;
+    margin-top: 3px;
+  }
+}
+
+@media (max-width: 767px) {
+  .item-discussion-views
+  {
+    background: #e8ecf3;
+    color: #667c99;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 2px 6px;
+    position: absolute;
+    right: 40px;
+    top: 24px;
+  }
+}
+/*
+.item-tags
+{
+  right: 120px;
+}
+*/

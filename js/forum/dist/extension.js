@@ -15,7 +15,15 @@ System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'f
         execute: function () {
 
             app.initializers.add('michaelbelgium-flarum-discussion-views', function () {
-                alert('Hello, world!');
+                extend(DiscussionListItem.prototype, 'infoItems', function (items) {
+                    var discussion = this.props.discussion;
+
+                    items.add('discussion-views', m(
+                        'span',
+                        null,
+                        '6'
+                    ));
+                });
             });
         }
     };
