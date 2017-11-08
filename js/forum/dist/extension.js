@@ -17,12 +17,7 @@ System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'f
             app.initializers.add('michaelbelgium-flarum-discussion-views', function () {
                 extend(DiscussionListItem.prototype, 'infoItems', function (items) {
                     var discussion = this.props.discussion;
-
-                    items.add('discussion-views', m(
-                        'span',
-                        null,
-                        '6'
-                    ));
+                    items.add('discussion-views', discussion.data.id);
                 });
             });
         }
