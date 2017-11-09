@@ -1,5 +1,7 @@
 <?php
 
+namespace michaelbelgium\views\listeners;
+
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Event\PrepareApiAttributes;
 use Illuminate\Contracts\Events\Dispatcher;

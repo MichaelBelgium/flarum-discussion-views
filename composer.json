@@ -16,6 +16,11 @@
     "issues": "https://github.com/MichaelBelgium/flarum-discussion-views/issues",
     "source": "https://github.com/MichaelBelgium/flarum-discussion-views"
   },
+  "autoload": {
+    "psr-4": {
+      "michaelbelgium\\views\\": "src/"
+    }
+  },
   "extra": {
     "flarum-extension": {
       "title": "Discussion views"

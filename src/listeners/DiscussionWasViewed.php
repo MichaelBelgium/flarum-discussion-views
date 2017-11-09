@@ -1,5 +1,7 @@
 <?php
 
+namespace michaelbelgium\views\listeners;
+
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Event\PrepareApiData;
 use Illuminate\Contracts\Events\Dispatcher;
