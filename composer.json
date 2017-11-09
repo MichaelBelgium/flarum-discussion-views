@@ -5,6 +5,17 @@
   "require": {
     "flarum/core": "^0.1.0-beta.7"
   },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Michael V.",
+      "email": "michael@michaelbelgium.me"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/MichaelBelgium/flarum-discussion-views/issues",
+    "source": "https://github.com/MichaelBelgium/flarum-discussion-views"
+  },
   "extra": {
     "flarum-extension": {
       "title": "Discussion views"
