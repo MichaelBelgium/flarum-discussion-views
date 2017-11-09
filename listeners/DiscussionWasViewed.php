@@ -6,11 +6,17 @@ use Illuminate\Contracts\Events\Dispatcher;
 
 class DiscussionWasViewed
 {
+    /**
+     * @param Dispatcher $events
+     */
     public function subscribe(Dispatcher $events)
     {
         $events->listen(PrepareApiData::class, [$this, "addView"]);
     }
 
+    /**
+     * @param PrepareApiData $event
+     */
     public function addView(PrepareApiData $event)
     {
         if ($event->isController(ShowDiscussionController::class))
