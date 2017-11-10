@@ -23,7 +23,12 @@
   },
   "extra": {
     "flarum-extension": {
-      "title": "Discussion views"
+      "title": "Discussion views",
+      "icon": {
+        "name": "eye",
+        "backgroundColor": "#88CC23",
+        "color": "#fff"
+      }
     }
   }
 }
