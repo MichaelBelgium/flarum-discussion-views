@@ -3,6 +3,7 @@
 namespace michaelbelgium\views\listeners;
 
 use Flarum\Event\ConfigureWebApp;
+use Flarum\Event\ConfigureLocales;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class AddAssets
@@ -12,13 +13,14 @@ class AddAssets
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(ConfigureWebApp::class, [$this, 'addClientAssets']);
+        $events->listen(ConfigureWebApp::class, [$this, 'configAssets']);
+        $events->listen(ConfigureLocales::class, [$this, 'configLocales']);
     }
 
     /**
      * @param ConfigureWebApp $event
      */
-    public function addClientAssets(ConfigureWebApp $event)
+    public function configAssets(ConfigureWebApp $event)
     {
         if($event->isForum())
         {
@@ -28,5 +30,13 @@ class AddAssets
             ]);
             $event->addBootstrapper('michaelbelgium/flarum-discussion-views/main');
         }
+    }
+
+    /**
+     * @param ConfigureLocales $event
+     */
+    public function configLocales(ConfigureLocales $event)
+    {
+        $event->locales->addTranslations('en', __DIR__.'/../../locale/en.yml');
     }
 }
