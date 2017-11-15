@@ -7,7 +7,8 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddPopularSor
 
     _export('default', function () {
         extend(DiscussionList.prototype, 'sortMap', function (map) {
-            map.popular = '-viewCount';
+            map.popular = '-views';
+            map.unpopular = 'views';
         });
     });
 
