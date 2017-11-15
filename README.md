@@ -7,8 +7,8 @@ Execute this command in your flarum root: `composer require michaelbelgium/flaru
 
 # Media
 Normal screen:
-![image](http://puu.sh/yisun.png)
+![image](http://puu.sh/ymLUg.png)
 
 Smaller screen:
 
-![image 2](http://puu.sh/yisFN.png)
+![image 2](http://puu.sh/ymLVm.png)
