@@ -3,10 +3,12 @@
 namespace michaelbelgium\views\listeners;
 
 use Flarum\Api\Controller\ShowDiscussionController;
+use Flarum\Core\Discussion;
 use Flarum\Event\PrepareApiData;
 use Illuminate\Contracts\Events\Dispatcher;
+use michaelbelgium\views\events\DiscussionWasViewed;
 
-class DiscussionWasViewed
+class AddDiscussionViewHandler
 {
     /**
      * @param Dispatcher $events
@@ -23,10 +25,11 @@ class DiscussionWasViewed
     {
         if ($event->isController(ShowDiscussionController::class))
         {
-            /** @var \Flarum\Core\Discussion $current_discussion */
+            /** @var Discussion $current_discussion */
             $current_discussion = $event->data;
-
             $current_discussion->views++;
+
+            event(new DiscussionWasViewed($event->actor, $current_discussion));
             $current_discussion->save();
         }
     }
