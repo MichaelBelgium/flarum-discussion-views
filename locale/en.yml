@@ -3,3 +3,11 @@ core:
     index_sort:
       popular_button: Popular
       unpopular_button: Unpopular
+
+flarum_discussion_views:
+  forum:
+    modal_resetviews:
+      title: Reset discussion view count
+      submit: Submit
+    discussion_controls:
+      resetviews_button: Reset views
