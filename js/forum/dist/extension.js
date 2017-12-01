@@ -23,35 +23,54 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddPopularSor
 });;
 'use strict';
 
-System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'flarum/extend', 'flarum/components/DiscussionListItem', 'flarum/Model', 'flarum/models/Discussion', 'michaelbelgium/flarum-discussion-views/components/AddPopularSort'], function (_export, _context) {
+System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay', ['flarum/extend', 'flarum/Model', 'flarum/models/Discussion', 'flarum/components/DiscussionListItem'], function (_export, _context) {
     "use strict";
 
-    var app, extend, DiscussionListItem, Model, Discussion, AddPopularSort;
+    var extend, Model, Discussion, DiscussionListItem;
+
+    _export('default', function () {
+        Discussion.prototype.views = Model.attribute('views');
+
+        extend(DiscussionListItem.prototype, 'infoItems', function (items) {
+            var discussion = this.props.discussion;
+            items.add('discussion-views', discussion.views());
+        });
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumModel) {
+            Model = _flarumModel.default;
+        }, function (_flarumModelsDiscussion) {
+            Discussion = _flarumModelsDiscussion.default;
+        }, function (_flarumComponentsDiscussionListItem) {
+            DiscussionListItem = _flarumComponentsDiscussionListItem.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
+System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'flarum/extend', 'michaelbelgium/flarum-discussion-views/components/AddPopularSort', 'michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay'], function (_export, _context) {
+    "use strict";
+
+    var app, extend, AddPopularSort, AddViewsToModelAndDisplay;
     return {
         setters: [function (_flarumApp) {
             app = _flarumApp.default;
         }, function (_flarumExtend) {
             extend = _flarumExtend.extend;
-        }, function (_flarumComponentsDiscussionListItem) {
-            DiscussionListItem = _flarumComponentsDiscussionListItem.default;
-        }, function (_flarumModel) {
-            Model = _flarumModel.default;
-        }, function (_flarumModelsDiscussion) {
-            Discussion = _flarumModelsDiscussion.default;
         }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort) {
             AddPopularSort = _michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort.default;
+        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay) {
+            AddViewsToModelAndDisplay = _michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay.default;
         }],
         execute: function () {
 
             app.initializers.add('michaelbelgium-flarum-discussion-views', function () {
-                Discussion.prototype.views = Model.attribute('views');
-
-                extend(DiscussionListItem.prototype, 'infoItems', function (items) {
-                    var discussion = this.props.discussion;
-                    items.add('discussion-views', discussion.views());
-                });
-
                 AddPopularSort();
+                AddViewsToModelAndDisplay();
             });
         }
     };
