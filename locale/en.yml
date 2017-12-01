@@ -9,5 +9,6 @@ flarum_discussion_views:
     modal_resetviews:
       title: Reset discussion view count
       submit: Submit
+      label: Set to view count
     discussion_controls:
       resetviews_button: Reset views

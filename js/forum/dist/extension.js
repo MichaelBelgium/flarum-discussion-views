@@ -133,7 +133,7 @@ System.register('michaelbelgium/flarum-discussion-views/components/ResetDiscussi
                                 m(
                                     'div',
                                     { className: 'Form-group' },
-                                    'Set to view count',
+                                    app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label'),
                                     m('input', { className: 'FormControl', type: 'number', min: '0' })
                                 ),
                                 m(

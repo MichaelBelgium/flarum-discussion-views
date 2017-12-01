@@ -11,7 +11,7 @@ export default class ResetDiscussionViewsModal extends Modal {
             <div className="Modal-body">
                 <div className="Form Form--centered">
                     <div className="Form-group">
-                        Set to view count
+                        {app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label')}
                         <input className="FormControl" type="number" min="0" />
                     </div>
                     <div className="Form-group">
