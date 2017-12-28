@@ -11,11 +11,14 @@ app.initializers.add('michaelbelgium-discussion-views', function () {
     AddViewsToModelAndDisplay();
 
     extend(DiscussionControls, 'moderationControls', function(items, discussion) {
-        items.add('reset', Button.component({
-            children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-            icon: 'eye',
-            onclick: this.resetViewsAction.bind(discussion)
-        }));
+        if(discussion.canReset())
+        {
+            items.add('reset', Button.component({
+                children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
+                icon: 'eye',
+                onclick: this.resetViewsAction.bind(discussion)
+            }));    
+        }
     });
 
     DiscussionControls.resetViewsAction = function() {

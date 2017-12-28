@@ -5,6 +5,7 @@ import DiscussionListItem from 'flarum/components/DiscussionListItem';
 
 export default function () {
     Discussion.prototype.views = Model.attribute('views');
+    Discussion.prototype.canReset = Model.attribute('canReset');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
         const discussion = this.props.discussion;

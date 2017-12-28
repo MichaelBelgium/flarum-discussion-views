@@ -30,6 +30,7 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToMod
 
     _export('default', function () {
         Discussion.prototype.views = Model.attribute('views');
+        Discussion.prototype.canReset = Model.attribute('canReset');
 
         extend(DiscussionListItem.prototype, 'infoItems', function (items) {
             var discussion = this.props.discussion;
@@ -48,51 +49,6 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToMod
             DiscussionListItem = _flarumComponentsDiscussionListItem.default;
         }],
         execute: function () {}
-    };
-});;
-'use strict';
-
-System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'flarum/extend', 'michaelbelgium/flarum-discussion-views/components/AddPopularSort', 'michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay', 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal', 'flarum/utils/DiscussionControls', 'flarum/components/Button'], function (_export, _context) {
-    "use strict";
-
-    var app, extend, AddPopularSort, AddViewsToModelAndDisplay, ResetDiscussionViewsModal, DiscussionControls, Button;
-    return {
-        setters: [function (_flarumApp) {
-            app = _flarumApp.default;
-        }, function (_flarumExtend) {
-            extend = _flarumExtend.extend;
-        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort) {
-            AddPopularSort = _michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort.default;
-        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay) {
-            AddViewsToModelAndDisplay = _michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay.default;
-        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal) {
-            ResetDiscussionViewsModal = _michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal.default;
-        }, function (_flarumUtilsDiscussionControls) {
-            DiscussionControls = _flarumUtilsDiscussionControls.default;
-        }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
-        }],
-        execute: function () {
-
-            app.initializers.add('michaelbelgium-discussion-views', function () {
-                AddPopularSort();
-                AddViewsToModelAndDisplay();
-
-                extend(DiscussionControls, 'moderationControls', function (items, discussion) {
-                    items.add('reset', Button.component({
-                        children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-                        icon: 'eye',
-                        onclick: this.resetViewsAction.bind(discussion)
-                    }));
-                });
-
-                DiscussionControls.resetViewsAction = function () {
-                    return app.modal.show(new ResetDiscussionViewsModal({
-                        discussion: this
-                    }));
-                };
-            });
-        }
     };
 });;
 'use strict';
@@ -171,6 +127,60 @@ System.register('michaelbelgium/flarum-discussion-views/components/ResetDiscussi
             }(Modal);
 
             _export('default', ResetDiscussionViewsModal);
+        }
+    };
+});;
+'use strict';
+
+System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'flarum/extend', 'michaelbelgium/flarum-discussion-views/components/AddPopularSort', 'michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay', 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal', 'flarum/utils/DiscussionControls', 'flarum/components/Button'], function (_export, _context) {
+    "use strict";
+
+    var app, extend, AddPopularSort, AddViewsToModelAndDisplay, ResetDiscussionViewsModal, DiscussionControls, Button;
+    return {
+        setters: [function (_flarumApp) {
+            app = _flarumApp.default;
+        }, function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort) {
+            AddPopularSort = _michaelbelgiumFlarumDiscussionViewsComponentsAddPopularSort.default;
+        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay) {
+            AddViewsToModelAndDisplay = _michaelbelgiumFlarumDiscussionViewsComponentsAddViewsToModelAndDisplay.default;
+        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal) {
+            ResetDiscussionViewsModal = _michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal.default;
+        }, function (_flarumUtilsDiscussionControls) {
+            DiscussionControls = _flarumUtilsDiscussionControls.default;
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton.default;
+        }],
+        execute: function () {
+
+            app.initializers.add('michaelbelgium-discussion-views', function () {
+                AddPopularSort();
+                AddViewsToModelAndDisplay();
+
+                extend(DiscussionControls, 'moderationControls', function (items, discussion) {
+                    if (discussion.canReset()) {
+                        items.add('reset', Button.component({
+                            children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
+                            icon: 'eye',
+                            onclick: this.resetViewsAction.bind(discussion)
+                        }));
+                    }
+                });
+
+                DiscussionControls.resetViewsAction = function () {
+                    // return app.modal.show(new ResetDiscussionViewsModal({
+                    //     discussion: this
+                    // }));
+                    // this.save({views: 0}).then(() => {
+                    //     if(app.current instanceof DiscussionPage) {
+                    //         app.current.stream.update();
+                    //     }
+                    //
+                    //     m.redraw();
+                    // });
+                };
+            });
         }
     };
 });
