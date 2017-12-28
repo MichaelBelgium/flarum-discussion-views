@@ -2,17 +2,23 @@ import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 
 export default class ResetDiscussionViewsModal extends Modal {
-    init() {
+    init()
+    {
+        super.init();
+
         this.discussion = this.props.discussion;
+        this.currentViewsCount = this.props.discussion.views();
+        this.newViewsCount = m.prop(this.currentViewsCount);
     }
 
-    content() {
+    content()
+    {
         return (
             <div className="Modal-body">
                 <div className="Form Form--centered">
                     <div className="Form-group">
-                        {app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label')}
-                        <input className="FormControl" type="number" min="0" />
+                        <label>{app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label')}</label>
+                        <input className="FormControl" type="number" min="0" bidi={this.newViewsCount} />
                     </div>
                     <div className="Form-group">
                         {Button.component({
@@ -27,17 +33,35 @@ export default class ResetDiscussionViewsModal extends Modal {
         )
     }
 
-    title() {
+    title()
+    {
         return app.translator.trans('flarum_discussion_views.forum.modal_resetviews.title');
     }
 
-    className() {
+    className()
+    {
         return 'Modal--small';
     }
 
-    onsubmit(e) {
+    onsubmit(e)
+    {
         e.preventDefault();
-        console.log('submitted');
+        this.loading = true;
+
+        const newViews = parseInt(this.newViewsCount());
+        const currentViews = this.currentViewsCount;
+
+        if (newViews >= 0 && newViews !== currentViews)
+        {
+            this.props.discussion
+                .save({ views: newViews })
+                .then(() => { m.redraw(); })
+                .catch((reason) => {
+                    this.loading = false;
+                    console.log(reason)
+                });
+        }
+
         this.hide();
     }
 }

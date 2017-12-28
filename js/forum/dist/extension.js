@@ -75,7 +75,11 @@ System.register('michaelbelgium/flarum-discussion-views/components/ResetDiscussi
                 babelHelpers.createClass(ResetDiscussionViewsModal, [{
                     key: 'init',
                     value: function init() {
+                        babelHelpers.get(ResetDiscussionViewsModal.prototype.__proto__ || Object.getPrototypeOf(ResetDiscussionViewsModal.prototype), 'init', this).call(this);
+
                         this.discussion = this.props.discussion;
+                        this.currentViewsCount = this.props.discussion.views();
+                        this.newViewsCount = m.prop(this.currentViewsCount);
                     }
                 }, {
                     key: 'content',
@@ -89,8 +93,12 @@ System.register('michaelbelgium/flarum-discussion-views/components/ResetDiscussi
                                 m(
                                     'div',
                                     { className: 'Form-group' },
-                                    app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label'),
-                                    m('input', { className: 'FormControl', type: 'number', min: '0' })
+                                    m(
+                                        'label',
+                                        null,
+                                        app.translator.trans('flarum_discussion_views.forum.modal_resetviews.label')
+                                    ),
+                                    m('input', { className: 'FormControl', type: 'number', min: '0', bidi: this.newViewsCount })
                                 ),
                                 m(
                                     'div',
@@ -118,8 +126,23 @@ System.register('michaelbelgium/flarum-discussion-views/components/ResetDiscussi
                 }, {
                     key: 'onsubmit',
                     value: function onsubmit(e) {
+                        var _this2 = this;
+
                         e.preventDefault();
-                        console.log('submitted');
+                        this.loading = true;
+
+                        var newViews = parseInt(this.newViewsCount());
+                        var currentViews = this.currentViewsCount;
+
+                        if (newViews >= 0 && newViews !== currentViews) {
+                            this.props.discussion.save({ views: newViews }).then(function () {
+                                m.redraw();
+                            }).catch(function (reason) {
+                                _this2.loading = false;
+                                console.log(reason);
+                            });
+                        }
+
                         this.hide();
                     }
                 }]);
@@ -169,16 +192,9 @@ System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'f
                 });
 
                 DiscussionControls.resetViewsAction = function () {
-                    // return app.modal.show(new ResetDiscussionViewsModal({
-                    //     discussion: this
-                    // }));
-                    // this.save({views: 0}).then(() => {
-                    //     if(app.current instanceof DiscussionPage) {
-                    //         app.current.stream.update();
-                    //     }
-                    //
-                    //     m.redraw();
-                    // });
+                    return app.modal.show(new ResetDiscussionViewsModal({
+                        discussion: this
+                    }));
                 };
             });
         }

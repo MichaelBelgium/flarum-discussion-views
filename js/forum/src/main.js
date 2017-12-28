@@ -17,7 +17,7 @@ app.initializers.add('michaelbelgium-discussion-views', function () {
                 children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
                 icon: 'eye',
                 onclick: this.resetViewsAction.bind(discussion)
-            }));    
+            }));
         }
     });
 
