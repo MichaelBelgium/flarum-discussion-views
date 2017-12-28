@@ -30,6 +30,14 @@ class AddAssets
             ]);
             $event->addBootstrapper('michaelbelgium/flarum-discussion-views/main');
         }
+
+        if($event->isAdmin())
+        {
+            $event->addAssets([
+                __DIR__.'/../../js/admin/dist/extension.js'
+            ]);
+            $event->addBootstrapper('michaelbelgium/flarum-discussion-views/main');
+        }
     }
 
     /**
