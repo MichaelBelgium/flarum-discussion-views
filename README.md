@@ -18,3 +18,7 @@ Normal screen:
 Smaller screen:
 
 ![image 2](http://puu.sh/ymLVm.png)
+
+Set the view count:
+
+![image 3](http://puu.sh/yQ4G1.png)
