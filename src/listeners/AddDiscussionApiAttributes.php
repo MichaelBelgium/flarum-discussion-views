@@ -24,6 +24,7 @@ class AddDiscussionApiAttributes
         if ($event->isSerializer(DiscussionSerializer::class))
         {
             $event->attributes['views'] = $event->model->views;
+            $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
         }
     }
 }
