@@ -13,9 +13,12 @@ class SaveDiscussionFromModal
 
 	public function OnDiscussionGetSaved(DiscussionWillBeSaved $event)
 	{
-		$discussion = $event->discussion;
+		if(isset($event->data["attributes"]["views"]))
+		{
+			$discussion = $event->discussion;
 
-		$discussion->views = $event->data["attributes"]["views"];
-		$discussion->save();
+			$discussion->views = $event->data["attributes"]["views"];
+			$discussion->save();
+		}
 	}
 }
