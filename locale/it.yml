@@ -1,0 +1,17 @@
+core:
+  forum:
+    index_sort:
+      popular_button: Popolari
+      unpopular_button: Impopolari
+
+flarum_discussion_views:
+  forum:
+    modal_resetviews:
+      title: Modifica visualizzazioni
+      submit: Imposta
+      label: Imposta visualizzazioni
+    discussion_controls:
+      resetviews_button: Imposta visualizzazioni
+  admin:
+      permissions:
+          reset_views_label: Imposta il numero di visualizzazioni
