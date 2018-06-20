@@ -1,5 +1,43 @@
 'use strict';
 
+System.register('michaelbelgium/flarum-discussion-views/components/AddModerationControl', ['flarum/extend', 'flarum/components/Button', 'flarum/utils/DiscussionControls', 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal'], function (_export, _context) {
+    "use strict";
+
+    var extend, Button, DiscussionControls, ResetDiscussionViewsModal;
+
+    _export('default', function () {
+        extend(DiscussionControls, 'moderationControls', function (items, discussion) {
+            if (discussion.canReset()) {
+                items.add('reset', Button.component({
+                    children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
+                    icon: 'eye',
+                    onclick: this.resetViewsAction.bind(discussion)
+                }));
+            }
+        });
+
+        DiscussionControls.resetViewsAction = function () {
+            return app.modal.show(new ResetDiscussionViewsModal({
+                discussion: this
+            }));
+        };
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton.default;
+        }, function (_flarumUtilsDiscussionControls) {
+            DiscussionControls = _flarumUtilsDiscussionControls.default;
+        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal) {
+            ResetDiscussionViewsModal = _michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
 System.register('michaelbelgium/flarum-discussion-views/components/AddPopularSort', ['flarum/extend', 'flarum/components/DiscussionList'], function (_export, _context) {
     "use strict";
 
@@ -23,10 +61,10 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddPopularSor
 });;
 'use strict';
 
-System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay', ['flarum/extend', 'flarum/Model', 'flarum/models/Discussion', 'flarum/components/DiscussionListItem'], function (_export, _context) {
+System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToModelAndDisplay', ['flarum/extend', 'flarum/Model', 'flarum/models/Discussion', 'flarum/components/DiscussionListItem', 'flarum/utils/abbreviateNumber'], function (_export, _context) {
     "use strict";
 
-    var extend, Model, Discussion, DiscussionListItem;
+    var extend, Model, Discussion, DiscussionListItem, abbreviateNumber;
 
     _export('default', function () {
         Discussion.prototype.views = Model.attribute('views');
@@ -34,7 +72,7 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToMod
 
         extend(DiscussionListItem.prototype, 'infoItems', function (items) {
             var discussion = this.props.discussion;
-            items.add('discussion-views', discussion.views());
+            items.add('discussion-views', abbreviateNumber(discussion.views()));
         });
     });
 
@@ -47,6 +85,8 @@ System.register('michaelbelgium/flarum-discussion-views/components/AddViewsToMod
             Discussion = _flarumModelsDiscussion.default;
         }, function (_flarumComponentsDiscussionListItem) {
             DiscussionListItem = _flarumComponentsDiscussionListItem.default;
+        }, function (_flarumUtilsAbbreviateNumber) {
+            abbreviateNumber = _flarumUtilsAbbreviateNumber.default;
         }],
         execute: function () {}
     };
@@ -177,43 +217,5 @@ System.register('michaelbelgium/flarum-discussion-views/main', ['flarum/app', 'm
                 AddModerationControl();
             });
         }
-    };
-});;
-'use strict';
-
-System.register('michaelbelgium/flarum-discussion-views/components/AddModerationControl', ['flarum/extend', 'flarum/components/Button', 'flarum/utils/DiscussionControls', 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal'], function (_export, _context) {
-    "use strict";
-
-    var extend, Button, DiscussionControls, ResetDiscussionViewsModal;
-
-    _export('default', function () {
-        extend(DiscussionControls, 'moderationControls', function (items, discussion) {
-            if (discussion.canReset()) {
-                items.add('reset', Button.component({
-                    children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-                    icon: 'eye',
-                    onclick: this.resetViewsAction.bind(discussion)
-                }));
-            }
-        });
-
-        DiscussionControls.resetViewsAction = function () {
-            return app.modal.show(new ResetDiscussionViewsModal({
-                discussion: this
-            }));
-        };
-    });
-
-    return {
-        setters: [function (_flarumExtend) {
-            extend = _flarumExtend.extend;
-        }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
-        }, function (_flarumUtilsDiscussionControls) {
-            DiscussionControls = _flarumUtilsDiscussionControls.default;
-        }, function (_michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal) {
-            ResetDiscussionViewsModal = _michaelbelgiumFlarumDiscussionViewsComponentsResetDiscussionViewsModal.default;
-        }],
-        execute: function () {}
     };
 });
