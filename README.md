@@ -21,4 +21,4 @@ Smaller screen:
 
 Set the view count:
 
-![image 3](http://puu.sh/yQ4G1.png)
+![image 3](http://puu.sh/AIOet.png)
