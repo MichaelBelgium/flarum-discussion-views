@@ -5,7 +5,7 @@ import PermissionGrid from 'flarum/components/PermissionGrid';
 app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 	extend(PermissionGrid.prototype, 'moderateItems', items => {
 		items.add('resetViews', {
-			icon: 'eye',
+			icon: 'far fa-eye',
 			label: app.translator.trans('flarum_discussion_views.admin.permissions.reset_views_label'),
 			permission: 'discussion.resetViews'
 		});
