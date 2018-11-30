@@ -3,7 +3,7 @@
 namespace michaelbelgium\views\listeners;
 
 use DirectoryIterator;
-use Flarum\Event\ConfigureWebApp;
+use Flarum\Frontend\Event\Rendering;
 use Flarum\Event\ConfigureLocales;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -14,14 +14,14 @@ class AddAssets
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(ConfigureWebApp::class, [$this, 'configAssets']);
+        $events->listen(Rendering::class, [$this, 'configAssets']);
         $events->listen(ConfigureLocales::class, [$this, 'configLocales']);
     }
 
     /**
-     * @param ConfigureWebApp $event
+     * @param Rendering $event
      */
-    public function configAssets(ConfigureWebApp $event)
+    public function configAssets(Rendering $event)
     {
         if($event->isForum())
         {

@@ -3,8 +3,8 @@
 namespace michaelbelgium\views\listeners;
 
 use Flarum\Api\Controller\ShowDiscussionController;
-use Flarum\Core\Discussion;
-use Flarum\Event\PrepareApiData;
+use Flarum\Discussion\Discussion;
+use Flarum\Api\Event\WillSerializeData;
 use Illuminate\Contracts\Events\Dispatcher;
 use michaelbelgium\views\events\DiscussionWasViewed;
 
@@ -15,13 +15,13 @@ class AddDiscussionViewHandler
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(PrepareApiData::class, [$this, "addView"]);
+        $events->listen(WillSerializeData::class, [$this, "addView"]);
     }
 
     /**
-     * @param PrepareApiData $event
+     * @param WillSerializeData $event
      */
-    public function addView(PrepareApiData $event)
+    public function addView(WillSerializeData $event)
     {
         if ($event->isController(ShowDiscussionController::class))
         {
