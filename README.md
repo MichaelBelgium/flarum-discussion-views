@@ -5,6 +5,15 @@ This is an extension for the [flarum forum software](http://flarum.org) where yo
 # Installation
 Execute this command in your flarum root: `composer require michaelbelgium/flarum-discussion-views`
 
+# Update
+Execute these commands to update the extension.
+
+```
+composer update michaelbelgium/flarum-discussion-views
+php flarum migrate
+php flarum cache:clear
+```
+
 # Features
 * Obviously tracks how much a discussion has been viewed and displays it per discussion on the discussionlist
 * Adds 2 sorting options: popular and unpopular
@@ -12,12 +21,7 @@ Execute this command in your flarum root: `composer require michaelbelgium/flaru
 * Adds 1 new permission where people can (re)set the viewcount of a discussion (default to admins)
 
 # Media
-Normal screen:
 ![image](http://puu.sh/ymLUg.png)
-
-Smaller screen:
-
-![image 2](http://puu.sh/ymLVm.png)
 
 Set the view count:
 
