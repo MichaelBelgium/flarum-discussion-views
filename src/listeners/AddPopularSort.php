@@ -19,6 +19,6 @@ class AddPopularSort
      */
     public function confApi(WillGetData $event)
     {
-        $event->addSortField('views');
+        $event->addSortField('view_count');
     }
 }

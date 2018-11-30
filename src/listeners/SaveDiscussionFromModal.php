@@ -17,7 +17,7 @@ class SaveDiscussionFromModal
 		{
 			$discussion = $event->discussion;
 
-			$discussion->views = $event->data["attributes"]["views"];
+			$discussion->view_count = $event->data["attributes"]["views"];
 			$discussion->save();
 		}
 	}

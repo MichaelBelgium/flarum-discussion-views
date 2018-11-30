@@ -27,7 +27,7 @@ class AddDiscussionViewHandler
         {
             /** @var Discussion $current_discussion */
             $current_discussion = $event->data;
-            $current_discussion->views++;
+            $current_discussion->view_count++;
 
             event(new DiscussionWasViewed($event->actor, $current_discussion));
             $current_discussion->save();
