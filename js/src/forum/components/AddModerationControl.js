@@ -1,7 +1,7 @@
 import { extend } from 'flarum/extend';
 import Button from 'flarum/components/Button';
 import DiscussionControls from 'flarum/utils/DiscussionControls';
-import ResetDiscussionViewsModal from 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal';
+import ResetDiscussionViewsModal from './ResetDiscussionViewsModal';
 
 export default function () {
     extend(DiscussionControls, 'moderationControls', function(items, discussion) {
@@ -9,7 +9,7 @@ export default function () {
         {
             items.add('reset', Button.component({
                 children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-                icon: 'eye',
+                icon: 'far fa-eye',
                 onclick: this.resetViewsAction.bind(discussion)
             }));
         }

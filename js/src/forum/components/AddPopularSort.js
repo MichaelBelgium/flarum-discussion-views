@@ -3,7 +3,7 @@ import DiscussionList from 'flarum/components/DiscussionList';
 
 export default function () {
     extend(DiscussionList.prototype, 'sortMap', function (map) {
-        map.popular = '-views';
-        map.unpopular = 'views';
+        map.popular = '-view_count';
+        map.unpopular = 'view_count';
     });
 }

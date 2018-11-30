@@ -3,7 +3,7 @@
 namespace michaelbelgium\views\listeners;
 
 use Flarum\Api\Serializer\DiscussionSerializer;
-use Flarum\Event\PrepareApiAttributes;
+use Flarum\Api\Event\Serializing;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class AddDiscussionApiAttributes
@@ -13,17 +13,17 @@ class AddDiscussionApiAttributes
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(PrepareApiAttributes::class, [$this, 'addApiAttributes']);
+        $events->listen(Serializing::class, [$this, 'addApiAttributes']);
     }
 
     /**
-     * @param PrepareApiAttributes $event
+     * @param Serializing $event
      */
-    public function addApiAttributes(PrepareApiAttributes $event)
+    public function addApiAttributes(Serializing $event)
     {
         if ($event->isSerializer(DiscussionSerializer::class))
         {
-            $event->attributes['views'] = $event->model->views;
+            $event->attributes['views'] = $event->model->view_count;
             $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
         }
     }

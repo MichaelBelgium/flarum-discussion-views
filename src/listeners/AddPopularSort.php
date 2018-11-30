@@ -2,7 +2,7 @@
 namespace michaelbelgium\views\listeners;
 
 use Illuminate\Contracts\Events\Dispatcher;
-use Flarum\Event\ConfigureApiController;
+use Flarum\Api\Event\WillGetData;
 
 class AddPopularSort
 {
@@ -11,14 +11,14 @@ class AddPopularSort
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(ConfigureApiController::class, [$this, 'confApi']);
+        $events->listen(WillGetData::class, [$this, 'confApi']);
     }
 
     /**
-     * @param ConfigureApiController $event
+     * @param WillGetData $event
      */
-    public function confApi(ConfigureApiController $event)
+    public function confApi(WillGetData $event)
     {
-        $event->addSortField('views');
+        $event->addSortField('view_count');
     }
 }
