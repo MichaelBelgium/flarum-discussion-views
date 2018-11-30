@@ -1,7 +1,7 @@
 import { extend } from 'flarum/extend';
 import Button from 'flarum/components/Button';
 import DiscussionControls from 'flarum/utils/DiscussionControls';
-import ResetDiscussionViewsModal from 'michaelbelgium/flarum-discussion-views/components/ResetDiscussionViewsModal';
+import ResetDiscussionViewsModal from './ResetDiscussionViewsModal';
 
 export default function () {
     extend(DiscussionControls, 'moderationControls', function(items, discussion) {
