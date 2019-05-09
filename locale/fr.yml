@@ -14,4 +14,4 @@ flarum_discussion_views:
       resetviews_button: Définir le nombre de vues
   admin:
       permissions:
-          reset_views_label: finir les vues de discussion
+          reset_views_label: Réinitialiser les vues d'une discussion
