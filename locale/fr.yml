@@ -1,0 +1,17 @@
+core:
+  forum:
+    index_sort:
+      popular_button: Populaire
+      unpopular_button: Unpopulaire
+
+flarum_discussion_views:
+  forum:
+    modal_resetviews:
+      title: Réinitialiser le compteur de vues
+      submit: Soumettre
+      label: Définir le nombre de vues
+    discussion_controls:
+      resetviews_button: Définir le nombre de vues
+  admin:
+      permissions:
+          reset_views_label: Réinitialiser les vues d'une discussion
