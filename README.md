@@ -14,6 +14,9 @@ php flarum migrate
 php flarum cache:clear
 ```
 
+# Translations
+If you would like to translate this extension to your language, make a PR in the corresponding language pack. 
+
 # Features
 * Obviously tracks how much a discussion has been viewed and displays it per discussion on the discussionlist
 * Adds 2 sorting options: popular and unpopular
