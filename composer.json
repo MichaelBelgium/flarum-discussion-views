@@ -33,5 +33,11 @@
     "flagrow": {
       "discuss": "https://discuss.flarum.org/d/7339"
     }
+  },
+  "suggest": {
+    "rooaaar/lang-french-extended": "Includes French translation for this extension",
+    "michaelbelgium/flarum-dutch": "Includes Dutch translation for this extension",
+    "dynastyking/flarum-lang-ptbr": "Includes Brazilian Portuguese translation for this extension",
+    "rob006/flarum-lang-polish": "Includes Polish translation for this extension"
   }
 }
