@@ -4,7 +4,7 @@ import AddViewsToModelAndDisplay from './components/AddViewsToModelAndDisplay';
 import AddModerationControl from './components/AddModerationControl';
 
 app.initializers.add('michaelbelgium-discussion-views', function () {
-    AddPopularSort();
+    // AddPopularSort();
     AddViewsToModelAndDisplay();
-    AddModerationControl();
+    // AddModerationControl();
 });
