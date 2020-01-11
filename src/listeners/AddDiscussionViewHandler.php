@@ -2,11 +2,13 @@
 
 namespace michaelbelgium\views\listeners;
 
+use Carbon\Carbon;
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Discussion\Discussion;
 use Flarum\Api\Event\WillSerializeData;
 use Illuminate\Contracts\Events\Dispatcher;
 use michaelbelgium\views\events\DiscussionWasViewed;
+use michaelbelgium\views\models\DiscussionView;
 
 class AddDiscussionViewHandler
 {
@@ -27,10 +29,20 @@ class AddDiscussionViewHandler
         {
             /** @var Discussion $current_discussion */
             $current_discussion = $event->data;
-            $current_discussion->view_count++;
+            
+            $view = new DiscussionView();
+            
+            if(!$event->actor->isGuest()) {
+                $view->user()->associate($event->actor);
+            }
+
+            $view->discussion()->associate($current_discussion);
+            $view->ip = $_SERVER['REMOTE_ADDR'];
+            $view->visited_at = Carbon::now();
+
+            $current_discussion->views()->save($view);
 
             event(new DiscussionWasViewed($event->actor, $current_discussion));
-            $current_discussion->save();
         }
     }
 }
