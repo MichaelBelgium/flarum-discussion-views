@@ -7,10 +7,12 @@ import DiscussionView from '../models/DiscussionView';
 
 export default function () {
     app.store.models.discussionviews = DiscussionView; //discussionviews = serializer type
+
+    Discussion.prototype.views = Model.hasMany('views');
     Discussion.prototype.canReset = Model.attribute('canReset');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
         const discussion = this.props.discussion;
-        items.add('discussion-views', abbreviateNumber(discussion.views()));
+        items.add('discussion-views', abbreviateNumber(discussion.views().length));
     });
 }
