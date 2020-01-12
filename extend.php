@@ -20,6 +20,6 @@ return [
         $events->subscribe(listeners\AddDiscussionViewHandler::class);
         $events->subscribe(listeners\AddDiscussionApiAttributes::class);
         // $events->subscribe(listeners\AddPopularSort::class);
-        // $events->subscribe(listeners\SaveDiscussionFromModal::class);
+        $events->subscribe(listeners\SaveDiscussionFromModal::class);
     }
 ]; 

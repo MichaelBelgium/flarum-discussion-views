@@ -8,10 +8,10 @@ flarum_discussion_views:
   forum:
     modal_resetviews:
       title: Reset discussion view count
-      submit: Submit
-      label: Set to view count
+      submit: Yes, remove all
+      label: This will remove {count} view(s) of this discussion. Continue?
     discussion_controls:
-      resetviews_button: Set view count
+      resetviews_button: Reset views
   admin:
       permissions:
           reset_views_label: Set discussion views

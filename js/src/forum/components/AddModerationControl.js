@@ -9,7 +9,7 @@ export default function () {
         {
             items.add('reset', Button.component({
                 children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-                icon: 'far fa-eye',
+                icon: 'far fa-eye-slash',
                 onclick: this.resetViewsAction.bind(discussion)
             }));
         }
