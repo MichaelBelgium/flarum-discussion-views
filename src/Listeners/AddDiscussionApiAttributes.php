@@ -1,6 +1,6 @@
 <?php
 
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Api\Event\Serializing;

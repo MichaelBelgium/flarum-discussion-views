@@ -1,5 +1,5 @@
 <?php
-namespace michaelbelgium\views\serializers;
+namespace Michaelbelgium\Discussionviews\Serializers;
 
 use Flarum\Api\Serializer\AbstractSerializer;
 use Flarum\Api\Serializer\DiscussionSerializer;

@@ -1,6 +1,6 @@
 <?php
 
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Serializer\DiscussionSerializer;
@@ -8,8 +8,8 @@ use Flarum\Discussion\Discussion;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
 use Illuminate\Contracts\Events\Dispatcher;
-use michaelbelgium\views\models\DiscussionView;
-use michaelbelgium\views\serializers\DiscussionViewSerializer;
+use Michaelbelgium\Discussionviews\Models\DiscussionView;
+use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
 
 class AddRelationship
 {

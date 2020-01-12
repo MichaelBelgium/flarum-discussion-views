@@ -1,6 +1,6 @@
 <?php
 
-namespace michaelbelgium\views\models;
+namespace Michaelbelgium\Discussionviews\Models;
 
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;

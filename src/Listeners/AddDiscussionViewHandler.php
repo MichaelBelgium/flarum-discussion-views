@@ -1,14 +1,14 @@
 <?php
 
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Carbon\Carbon;
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Discussion\Discussion;
 use Flarum\Api\Event\WillSerializeData;
 use Illuminate\Contracts\Events\Dispatcher;
-use michaelbelgium\views\events\DiscussionWasViewed;
-use michaelbelgium\views\models\DiscussionView;
+use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
+use Michaelbelgium\Discussionviews\Models\DiscussionView;
 
 class AddDiscussionViewHandler
 {
