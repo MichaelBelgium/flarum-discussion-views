@@ -42,6 +42,10 @@ class AddDiscussionViewHandler
 
             $current_discussion->views()->save($view);
 
+            //for the (un)popular filter
+            $current_discussion->view_count = $current_discussion->views()->count();
+            $current_discussion->save();
+
             event(new DiscussionWasViewed($event->actor, $current_discussion));
         }
     }
