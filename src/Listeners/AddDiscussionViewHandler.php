@@ -6,12 +6,19 @@ use Carbon\Carbon;
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Discussion\Discussion;
 use Flarum\Api\Event\WillSerializeData;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 
 class AddDiscussionViewHandler
 {
+    private $settings;
+
+    public function __construct(SettingsRepositoryInterface $settings) {
+        $this->settings = $settings;
+    }
+
     /**
      * @param Dispatcher $events
      */
@@ -29,6 +36,13 @@ class AddDiscussionViewHandler
         {
             /** @var Discussion $current_discussion */
             $current_discussion = $event->data;
+
+            if($this->settings->get('michaelbelgium-discussionviews.track_unique', false)) {
+                $existingViews = $current_discussion->views()->where('ip', $_SERVER['REMOTE_ADDR'])->get();
+                if($existingViews->count() > 0) {
+                    return;
+                }
+            }
             
             $view = new DiscussionView();
             
