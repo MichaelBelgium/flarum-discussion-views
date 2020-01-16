@@ -1,6 +1,6 @@
 <?php
 
-use michaelbelgium\views\listeners;
+use Michaelbelgium\Discussionviews\Listeners;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Extend\Locales;
 use Flarum\Extend\Frontend;
@@ -16,6 +16,7 @@ return [
     new Locales(__DIR__ . '/locale'),
 
     function (Dispatcher $events) {
+        $events->subscribe(Listeners\AddRelationship::class);
         $events->subscribe(Listeners\AddDiscussionViewHandler::class);
         $events->subscribe(Listeners\AddDiscussionApiAttributes::class);
         $events->subscribe(Listeners\AddPopularSort::class);

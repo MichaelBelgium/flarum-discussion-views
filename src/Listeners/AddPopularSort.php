@@ -1,5 +1,5 @@
 <?php
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Api\Event\WillGetData;

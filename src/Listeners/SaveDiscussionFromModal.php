@@ -1,5 +1,5 @@
 <?php
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Discussion\Event\Saving;
@@ -13,11 +13,14 @@ class SaveDiscussionFromModal
 
 	public function OnDiscussionGetSaved(Saving $event)
 	{
-		if(isset($event->data["attributes"]["views"]))
+		if(isset($event->data["attributes"]["resetViews"]) && $event->data["attributes"]["resetViews"] === true)
 		{
 			$discussion = $event->discussion;
 
-			$discussion->view_count = $event->data["attributes"]["views"];
+			$discussion->views()->delete();
+
+			//for the (un)popular filter
+			$discussion->view_count = $discussion->views()->count();
 			$discussion->save();
 		}
 	}

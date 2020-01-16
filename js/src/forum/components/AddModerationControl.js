@@ -5,11 +5,11 @@ import ResetDiscussionViewsModal from './ResetDiscussionViewsModal';
 
 export default function () {
     extend(DiscussionControls, 'moderationControls', function(items, discussion) {
-        if(discussion.canReset())
+        if(discussion.canReset() && discussion.views().length > 0)
         {
             items.add('reset', Button.component({
                 children: app.translator.trans('flarum_discussion_views.forum.discussion_controls.resetviews_button'),
-                icon: 'far fa-eye',
+                icon: 'far fa-eye-slash',
                 onclick: this.resetViewsAction.bind(discussion)
             }));
         }

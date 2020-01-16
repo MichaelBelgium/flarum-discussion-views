@@ -1,6 +1,6 @@
 <?php
 
-namespace michaelbelgium\views\listeners;
+namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Api\Event\Serializing;
@@ -23,7 +23,6 @@ class AddDiscussionApiAttributes
     {
         if ($event->isSerializer(DiscussionSerializer::class))
         {
-            $event->attributes['views'] = $event->model->view_count;
             $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
         }
     }

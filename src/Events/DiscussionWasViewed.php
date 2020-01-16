@@ -1,6 +1,6 @@
 <?php
 
-namespace michaelbelgium\views\events;
+namespace Michaelbelgium\Discussionviews\Events;
 
 
 use Flarum\Discussion\Discussion;
