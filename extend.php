@@ -21,5 +21,6 @@ return [
         $events->subscribe(Listeners\AddDiscussionApiAttributes::class);
         $events->subscribe(Listeners\AddPopularSort::class);
         $events->subscribe(Listeners\SaveDiscussionFromModal::class);
+        $events->subscribe(Listeners\SettingsToForum::class);
     }
 ]; 
