@@ -24,8 +24,16 @@ If you would like to translate this extension to your language, make a PR in the
 * Adds 1 new permission where people can (re)set the viewcount of a discussion (default to admins)
 
 # Media
-![image](http://puu.sh/ymLUg.png)
 
-Set the view count:
+Normal:
+![image](https://i.imgur.com/ZrQZd1e.png)
+Smaller screens:
+![Imgur](https://i.imgur.com/es4NYHI.png)
 
-![image 3](http://puu.sh/AIOet.png)
+## Reset the view count
+
+![Imgur](https://i.imgur.com/iVu92yT.png)
+
+## Extension settings
+
+![Imgur](https://i.imgur.com/sQqgKex.png)
