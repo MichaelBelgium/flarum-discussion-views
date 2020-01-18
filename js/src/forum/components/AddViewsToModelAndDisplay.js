@@ -13,6 +13,8 @@ export default function () {
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
         const discussion = this.props.discussion;
-        items.add('discussion-views', abbreviateNumber(discussion.views().length));
+
+        var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(discussion.views().length) : discussion.views().length;
+        items.add('discussion-views', number);
     });
 }

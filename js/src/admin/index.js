@@ -1,6 +1,7 @@
 import { extend } from 'flarum/extend';
 import app from 'flarum/app';
 import PermissionGrid from 'flarum/components/PermissionGrid';
+import DiscussionviewSettingsModal from './components/DiscussionviewSettingsModal';
 
 app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 	extend(PermissionGrid.prototype, 'moderateItems', items => {
@@ -10,4 +11,6 @@ app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 			permission: 'discussion.resetViews'
 		});
 	});
+
+	app.extensionSettings['michaelbelgium-discussion-views'] = () => app.modal.show(new DiscussionviewSettingsModal());
 });
