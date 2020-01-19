@@ -12,9 +12,9 @@ export default function () {
     Discussion.prototype.canReset = Model.attribute('canReset');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
-        const discussion = this.props.discussion;
+        const views = this.props.discussion.views();
 
-        var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(discussion.views().length) : discussion.views().length;
+        var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views.length) : views.length;
         items.add('discussion-views', number);
     });
 }
