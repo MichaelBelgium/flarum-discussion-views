@@ -30,7 +30,15 @@ export default class DiscussionviewSettingsModal extends SettingsModal {
                     onchange: this.setting('michaelbelgium-discussionviews.show_filter'),
                     children: app.translator.trans('flarum_discussion_views.admin.settings.show_filter')
                 })}
-            </div>
+            </div>,
+
+            m('.Form-group', [
+                m('label', app.translator.trans('flarum_discussion_views.admin.settings.max_viewcount')),
+                m('input[type=number].FormControl', {
+                    bidi: this.setting('michaelbelgium-discussionviews.max_listcount'),
+                    min: 1
+                })
+            ])
         ];
     }
 }
