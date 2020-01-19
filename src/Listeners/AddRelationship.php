@@ -28,7 +28,7 @@ class AddRelationship
     public function addRelationship(GetModelRelationship $event)
     {
         if($event->isRelationship(Discussion::class, self::RELATIONSHIP)) {
-            return $event->model->hasMany(DiscussionView::class);
+            return $event->model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
         }
     }
 
@@ -43,7 +43,7 @@ class AddRelationship
     {
         if($event->controller->serializer == DiscussionSerializer::class) {
             $event->addOptionalInclude(self::RELATIONSHIP.'.discussion');
-            $event->addInclude([self::RELATIONSHIP, self::RELATIONSHIP.'.user']); 
+            $event->addInclude([self::RELATIONSHIP, self::RELATIONSHIP.'.user']);
         }
     }
 }
