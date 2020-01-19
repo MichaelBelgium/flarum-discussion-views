@@ -29,7 +29,7 @@ export default function () {
         const viewList = new ItemList();
 
         $.each(views, function(key, view) {
-            if(key === 4) return false;
+            if(key == app.forum.attribute('mb-discussionviews.max_listcount')) return false;
 
             var userName = view.user() === false ? 'Guest' : ucfirst(view.user().username());
             var profileUrl = view.user() === false ? '#' : app.forum.attribute('baseUrl') + '/u/' + userName;
