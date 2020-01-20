@@ -25,6 +25,8 @@ export default function () {
     });
 
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
+        if(app.forum.attribute('mb-discussionviews.show_viewlist') == 0) return;
+        
         const views = this.discussion.views();
         const viewList = new ItemList();
 

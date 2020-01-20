@@ -23,3 +23,4 @@ flarum_discussion_views:
         abbr_numbers: Abbreviate view numbers
         show_filter: Enable (un)popular sort field
         max_viewcount: Maximum viewlist items
+        show_viewlist: Enable viewlist
