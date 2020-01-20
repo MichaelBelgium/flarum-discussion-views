@@ -34,7 +34,6 @@ export default function () {
             if(key == app.forum.attribute('mb-discussionviews.max_listcount')) return false;
 
             var userName = view.user() === false ? 'Guest' : ucfirst(view.user().username());
-            var profileUrl = view.user() === false ? '#' : app.forum.attribute('baseUrl') + '/u/' + userName;
 
             var listitem = 
                 <div className="item-lastUser-content">
@@ -46,7 +45,7 @@ export default function () {
                 </div>;
 
             if(view.user() !== false) {
-                listitem = <a href={profileUrl}>{listitem}</a>;
+                listitem = <a href={app.forum.attribute('baseUrl') + '/u/' + userName}>{listitem}</a>;
             }
 
             viewList.add('lastUser-' + key, listitem);
