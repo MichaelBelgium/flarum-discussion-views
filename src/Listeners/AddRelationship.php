@@ -4,6 +4,7 @@ namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Flarum\Api\Event\WillGetData;
 use Flarum\Api\Serializer\DiscussionSerializer;
+use Flarum\Api\Event\Serializing;
 use Flarum\Discussion\Discussion;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
@@ -23,6 +24,7 @@ class AddRelationship
         $events->listen(GetModelRelationship::class, [$this, "addRelationship"]);
         $events->listen(GetApiRelationship::class, [$this, 'addApiRelationship']);
         $events->listen(WillGetData::class, [$this, 'includeRelationship']);
+        $events->listen(Serializing::class, [$this, 'prepareApiAttributes']);
     }
 
     public function addRelationship(GetModelRelationship $event)
@@ -44,6 +46,14 @@ class AddRelationship
         if($event->controller->serializer == DiscussionSerializer::class) {
             $event->addOptionalInclude(self::RELATIONSHIP.'.discussion');
             $event->addInclude([self::RELATIONSHIP, self::RELATIONSHIP.'.user']); 
+        }
+    }
+
+    public function prepareApiAttributes(Serializing $event)
+    {
+        if ($event->isSerializer(DiscussionSerializer::class))
+        {
+            $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
         }
     }
 }
