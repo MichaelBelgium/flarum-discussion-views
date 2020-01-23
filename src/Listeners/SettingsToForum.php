@@ -2,6 +2,7 @@
 namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Flarum\Api\Event\Serializing;
+use Flarum\Api\Serializer\ForumSerializer;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Settings\SettingsRepositoryInterface;
 
@@ -20,7 +21,9 @@ class SettingsToForum
 
     public function addSettings(Serializing $event)
     {
-        $event->attributes['mb-discussionviews.show_filter'] = $this->settings->get('michaelbelgium-discussionviews.show_filter', true);
-        $event->attributes['mb-discussionviews.abbr_numbers'] = $this->settings->get('michaelbelgium-discussionviews.abbr_numbers', false);
+        if($event->isSerializer(ForumSerializer::class)) {
+            $event->attributes['mb-discussionviews.show_filter'] = $this->settings->get('michaelbelgium-discussionviews.show_filter', true);
+            $event->attributes['mb-discussionviews.abbr_numbers'] = $this->settings->get('michaelbelgium-discussionviews.abbr_numbers', false);
+        }
     }
 }
