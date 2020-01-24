@@ -15,7 +15,7 @@ import humanTime from 'flarum/utils/humanTime';
 export default function () {
     app.store.models.discussionviews = DiscussionView; //discussionviews = serializer type
 
-    Discussion.prototype.views = Model.hasMany('views');
+    Discussion.prototype.views = Model.hasMany('latestViews');
     Discussion.prototype.canReset = Model.attribute('canReset');
     Discussion.prototype.viewCount = Model.attribute('viewCount');
 
@@ -27,7 +27,7 @@ export default function () {
     });
 
     extend(DiscussionList.prototype, 'requestParams', function(params) {
-        params.include.push('views'); //fixes not loading relationship when navigating back to the discussion list if you directly went to a discussion or another page
+        params.include.push('latestViews'); //fixes not loading relationship when navigating back to the discussion list if you directly went to a discussion or another page
     })
     
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
@@ -37,8 +37,6 @@ export default function () {
         const viewList = new ItemList();
 
         $.each(views, function(key, view) {
-            if(key == app.forum.attribute('mb-discussionviews.max_listcount')) return false;
-
             var userName = view.user() === false ? 'Guest' : ucfirst(view.user().username());
 
             var listitem = 
