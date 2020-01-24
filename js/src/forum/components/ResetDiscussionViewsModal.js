@@ -7,7 +7,7 @@ export default class ResetDiscussionViewsModal extends Modal {
         super.init();
 
         this.discussion = this.props.discussion;
-        this.currentViewsCount = this.discussion.views().length;
+        this.currentViewsCount = this.discussion.viewCount();
     }
 
     content()

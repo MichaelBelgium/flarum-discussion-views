@@ -54,6 +54,7 @@ class AddRelationship
         if ($event->isSerializer(DiscussionSerializer::class))
         {
             $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
+            $event->attributes['viewCount'] = $event->model->view_count;
         }
     }
 }

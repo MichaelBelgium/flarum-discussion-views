@@ -17,11 +17,12 @@ export default function () {
 
     Discussion.prototype.views = Model.hasMany('views');
     Discussion.prototype.canReset = Model.attribute('canReset');
+    Discussion.prototype.viewCount = Model.attribute('viewCount');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
-        const views = this.props.discussion.views();
+        const views = this.props.discussion.viewCount();
 
-        var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views.length) : views.length;
+        var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views) : views;
         items.add('discussion-views', number);
     });
 
