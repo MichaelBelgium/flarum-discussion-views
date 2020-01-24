@@ -2,6 +2,7 @@ import { extend } from 'flarum/extend';
 import Model from 'flarum/Model';
 import Discussion from 'flarum/models/Discussion';
 import DiscussionListItem from 'flarum/components/DiscussionListItem';
+import DiscussionList from 'flarum/components/DiscussionList';
 import DiscussionPage from 'flarum/components/DiscussionPage';
 import FieldSet from 'flarum/components/FieldSet';
 import abbreviateNumber from 'flarum/utils/abbreviateNumber';
@@ -24,6 +25,10 @@ export default function () {
         items.add('discussion-views', number);
     });
 
+    extend(DiscussionList.prototype, 'requestParams', function(params) {
+        params.include.push('views'); //fixes not loading relationship when navigating back to the discussion list if you directly went to a discussion or another page
+    })
+    
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
         if(app.forum.attribute('mb-discussionviews.show_viewlist') == 0) return;
         
