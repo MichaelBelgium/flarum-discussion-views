@@ -40,3 +40,7 @@ Smaller screens:
 ## Extension settings
 
 ![Imgur](https://i.imgur.com/3jUSrUd.png)
+
+## Viewlist
+
+![Imgur](https://i.imgur.com/Nn012B0.png)
