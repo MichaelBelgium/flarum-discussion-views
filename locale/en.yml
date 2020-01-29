@@ -12,6 +12,8 @@ flarum_discussion_views:
       label: This will remove {count} view of this discussion. Continue?|This will remove {count} views of this discussion. Continue?
     discussion_controls:
       resetviews_button: Reset views
+    viewlist:
+      title: Latest viewers
   admin:
       permissions:
         reset_views_label: Set discussion views
@@ -20,3 +22,5 @@ flarum_discussion_views:
         track_unique: Track unique views
         abbr_numbers: Abbreviate view numbers
         show_filter: Enable (un)popular sort field
+        max_viewcount: Maximum viewlist items
+        show_viewlist: Enable viewlist

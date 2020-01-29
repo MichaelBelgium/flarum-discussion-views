@@ -23,7 +23,8 @@ class SettingsToForum
     {
         if($event->isSerializer(ForumSerializer::class)) {
             $event->attributes['mb-discussionviews.show_filter'] = $this->settings->get('michaelbelgium-discussionviews.show_filter', true);
-            $event->attributes['mb-discussionviews.abbr_numbers'] = $this->settings->get('michaelbelgium-discussionviews.abbr_numbers', false);
+	        $event->attributes['mb-discussionviews.abbr_numbers'] = $this->settings->get('michaelbelgium-discussionviews.abbr_numbers', false);
+	        $event->attributes['mb-discussionviews.show_viewlist'] = $this->settings->get('michaelbelgium-discussionviews.show_viewlist', true);
         }
     }
 }

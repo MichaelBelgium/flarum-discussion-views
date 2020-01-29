@@ -1,11 +1,10 @@
 .item-discussion-views {
   font-size: 14px;
-  float:right;
+  float: right;
   margin-right: -43px;
 }
 
-@media (min-width: 768px)
-{
+@media (min-width: 768px) {
   .item-discussion-views:before {
     font-family: 'Font Awesome 5 Free';
     font-size: inherit;
@@ -15,8 +14,7 @@
 }
 
 @media (max-width: 767px) {
-  .item-discussion-views
-  {
+  .item-discussion-views {
     background: #e8ecf3;
     color: #667c99;
     border-radius: 4px;
@@ -25,5 +23,29 @@
     position: absolute;
     right: 58px;
     top: 35px;
+  }
+}
+
+fieldset.LastDiscussionUsers {
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    div.item-lastUser-content {
+      display: flex;
+      justify-content: space-between;
+
+      div {
+        flex-direction: column;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-left: 5px;
+
+        span.lastUser-visited {
+          font-size: .8em;
+        }
+      }
+    }
   }
 }

@@ -26,8 +26,11 @@ If you would like to translate this extension to your language, make a PR in the
 # Media
 
 Normal:
+
 ![image](https://i.imgur.com/ZrQZd1e.png)
+
 Smaller screens:
+
 ![Imgur](https://i.imgur.com/es4NYHI.png)
 
 ## Reset the view count
@@ -36,4 +39,8 @@ Smaller screens:
 
 ## Extension settings
 
-![Imgur](https://i.imgur.com/sQqgKex.png)
+![Imgur](https://i.imgur.com/3jUSrUd.png)
+
+## Viewlist
+
+![Imgur](https://i.imgur.com/Nn012B0.png)

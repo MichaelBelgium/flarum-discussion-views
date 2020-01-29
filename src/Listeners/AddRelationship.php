@@ -8,6 +8,7 @@ use Flarum\Api\Event\Serializing;
 use Flarum\Discussion\Discussion;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
@@ -15,6 +16,13 @@ use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
 class AddRelationship
 {
     const RELATIONSHIP = 'views'; //$discussion->views()
+    const RELATIONSHIP_LATEST = 'latestViews';
+
+    private $settings;
+
+    public function __construct(SettingsRepositoryInterface $settings) {
+        $this->settings = $settings;
+    }
 
     /**
      * @param Dispatcher $events
@@ -30,22 +38,25 @@ class AddRelationship
     public function addRelationship(GetModelRelationship $event)
     {
         if($event->isRelationship(Discussion::class, self::RELATIONSHIP)) {
-            return $event->model->hasMany(DiscussionView::class);
+            return $event->model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
+        }
+
+        if($event->isRelationship(Discussion::class, self::RELATIONSHIP_LATEST)) {
+            return $event->model->views()->limit($this->settings->get('michaelbelgium-discussionviews.max_listcount', 5));
         }
     }
 
     public function addApiRelationship(GetApiRelationship $event)
     {
-        if($event->isRelationship(DiscussionSerializer::class, self::RELATIONSHIP)) {
-			return $event->serializer->hasMany($event->model, DiscussionViewSerializer::class, self::RELATIONSHIP);
+        if($event->isRelationship(DiscussionSerializer::class, self::RELATIONSHIP_LATEST)) {
+			return $event->serializer->hasMany($event->model, DiscussionViewSerializer::class, self::RELATIONSHIP_LATEST);
         }
     }
 
     public function includeRelationship(WillGetData $event)
     {
         if($event->controller->serializer == DiscussionSerializer::class) {
-            $event->addOptionalInclude(self::RELATIONSHIP.'.discussion');
-            $event->addInclude([self::RELATIONSHIP, self::RELATIONSHIP.'.user']); 
+            $event->addInclude([self::RELATIONSHIP_LATEST, self::RELATIONSHIP_LATEST.'.user']);
         }
     }
 
@@ -54,6 +65,7 @@ class AddRelationship
         if ($event->isSerializer(DiscussionSerializer::class))
         {
             $event->attributes['canReset'] = (bool)$event->actor->can('resetViews');
+            $event->attributes['viewCount'] = $event->model->view_count;
         }
     }
 }
