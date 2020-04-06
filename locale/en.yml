@@ -17,7 +17,7 @@ flarum_discussion_views:
   admin:
       permissions:
         can_reset_views: Reset discussion views
-        can_view_number: View discussion viewnumber
+        can_view_number: View discussion viewcount
       settings:
         title: Discussionviews settings
         track_unique: Track unique views
