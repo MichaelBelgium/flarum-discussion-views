@@ -7,7 +7,7 @@ app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 	extend(PermissionGrid.prototype, 'moderateItems', items => {
 		items.add('resetViews', {
 			icon: 'far fa-eye',
-			label: app.translator.trans('flarum_discussion_views.admin.permissions.reset_views_label'),
+			label: app.translator.trans('flarum_discussion_views.admin.permissions.can_reset_views'),
 			permission: 'discussion.resetViews'
 		});
 	});
