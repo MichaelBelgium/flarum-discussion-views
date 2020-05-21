@@ -15,13 +15,13 @@ export default class ResetDiscussionViewsModal extends Modal {
         return (
             <div className="Modal-body">
                 <div className="Form Form--centered">
-                    <p>{app.translator.transChoice('flarum_discussion_views.forum.modal_resetviews.label', this.currentViewsCount, {count: this.currentViewsCount })}</p>
+                    <p>{app.translator.transChoice('michaelbelgium-discussion-views.forum.modal_resetviews.label', this.currentViewsCount, {count: this.currentViewsCount })}</p>
                     <div className="Form-group">
                         {Button.component({
                             className: 'Button Button--primary Button--block',
                             type: 'submit',
                             loading: this.loading,
-                            children: app.translator.trans('flarum_discussion_views.forum.modal_resetviews.submit')
+                            children: app.translator.trans('michaelbelgium-discussion-views.forum.modal_resetviews.submit_button')
                         })}
                     </div>
                 </div>
@@ -31,7 +31,7 @@ export default class ResetDiscussionViewsModal extends Modal {
 
     title()
     {
-        return app.translator.trans('flarum_discussion_views.forum.modal_resetviews.title');
+        return app.translator.trans('michaelbelgium-discussion-views.forum.modal_resetviews.title');
     }
 
     className()

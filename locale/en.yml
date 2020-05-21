@@ -1,14 +1,11 @@
-core:
+michaelbelgium-discussion-views:
   forum:
     index_sort:
       popular_button: Popular
       unpopular_button: Unpopular
-
-flarum_discussion_views:
-  forum:
     modal_resetviews:
       title: Reset discussion view count
-      submit: Yes, remove all
+      submit_button: Yes, remove all
       label: This will remove {count} view of this discussion. Continue?|This will remove {count} views of this discussion. Continue?
     discussion_controls:
       resetviews_button: Reset views
@@ -16,12 +13,12 @@ flarum_discussion_views:
       title: Latest viewers
   admin:
       permissions:
-        can_reset_views: Reset discussion views
-        can_view_number: View discussion viewcount
+        reset_views_label: Reset discussion views
+        view_number_label: View discussion viewcount
       settings:
         title: Discussionviews settings
-        track_unique: Track unique views
-        abbr_numbers: Abbreviate view numbers
-        show_filter: Enable (un)popular sort field
-        max_viewcount: Maximum viewlist items
-        show_viewlist: Enable viewlist
+        track_unique_label: Track unique views
+        abbr_numbers_label: Abbreviate view numbers
+        show_filter_label: Enable (un)popular sort field
+        max_viewcount_label: Maximum viewlist items
+        show_viewlist_label: Enable viewlist

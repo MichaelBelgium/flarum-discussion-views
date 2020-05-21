@@ -58,7 +58,7 @@ export default function () {
         });
 
         items.add('lastDiscussionViewers', FieldSet.component({
-            label: app.translator.trans('flarum_discussion_views.forum.viewlist.title'),
+            label: app.translator.trans('michaelbelgium-discussion-views.forum.viewlist.title'),
             className: 'LastDiscussionUsers',
             children: viewList.toArray()
         }));

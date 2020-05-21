@@ -7,7 +7,7 @@ app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 	extend(PermissionGrid.prototype, 'moderateItems', items => {
 		items.add('resetViews', {
 			icon: 'far fa-eye',
-			label: app.translator.trans('flarum_discussion_views.admin.permissions.can_reset_views'),
+			label: app.translator.trans('michaelbelgium-discussion-views.admin.permissions.reset_views_label'),
 			permission: 'discussion.resetViews'
 		});
 	});
@@ -15,7 +15,7 @@ app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 	extend(PermissionGrid.prototype, 'viewItems', items => {
 		items.add('viewDiscussionNumber', {
 			icon: 'far fa-eye',
-			label: app.translator.trans('flarum_discussion_views.admin.permissions.can_view_number'),
+			label: app.translator.trans('michaelbelgium-discussion-views.admin.permissions.view_number_label'),
 			permission: 'discussion.readViewnumber',
 			allowGuest: true
 		});
