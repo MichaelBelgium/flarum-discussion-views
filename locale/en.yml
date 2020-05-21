@@ -1,8 +1,11 @@
-michaelbelgium-discussion-views:
+core:
   forum:
     index_sort:
       popular_button: Popular
       unpopular_button: Unpopular
+
+michaelbelgium-discussion-views:
+  forum:
     modal_resetviews:
       title: Reset discussion view count
       submit_button: Yes, remove all
