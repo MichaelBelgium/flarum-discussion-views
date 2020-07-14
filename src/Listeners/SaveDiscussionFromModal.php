@@ -20,7 +20,7 @@ class SaveDiscussionFromModal
 			$discussion->views()->delete();
 
 			//for the (un)popular filter
-			$discussion->view_count = $discussion->views()->count();
+			$discussion->view_count = 0;
 			$discussion->save();
 		}
 	}
