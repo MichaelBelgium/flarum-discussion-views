@@ -43,7 +43,7 @@ export default function () {
 
             var listitem = 
                 <div className="item-lastUser-content">
-                    {avatar(view.user() === false ? null : view.user())}
+                    {avatar(view.user())}
                     <div>
                         {userName}
                         <span className="lastUser-visited" title={view.visitedAt().toLocaleString()}>{humanTime(view.visitedAt())}</span>
@@ -51,7 +51,7 @@ export default function () {
                 </div>;
 
             if(view.user() !== false) {
-                listitem = <a href={app.forum.attribute('baseUrl') + '/u/' + userName}>{listitem}</a>;
+                listitem = <a href={app.route.user(view.user())}>{listitem}</a>;
             }
 
             viewList.add('lastUser-' + key, listitem);
