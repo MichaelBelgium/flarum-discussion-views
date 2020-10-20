@@ -21,5 +21,5 @@ app.initializers.add('michaelbelgium-admin-discussion-views', () => {
 		});
 	});
 
-	app.extensionSettings['michaelbelgium-discussion-views'] = () => app.modal.show(new DiscussionviewSettingsModal());
+	app.extensionSettings['michaelbelgium-discussion-views'] = () => app.modal.show(DiscussionviewSettingsModal);
 });
