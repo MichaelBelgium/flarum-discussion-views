@@ -24,7 +24,7 @@ export default function () {
             const views = this.attrs.discussion.viewCount();
 
             var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views) : views;
-            items.add('discussion-views', number);   
+            items.add('discussion-views', <span>{number}</span>);   
         }
     });
 
@@ -57,10 +57,11 @@ export default function () {
             viewList.add('lastUser-' + key, listitem);
         });
 
-        items.add('lastDiscussionViewers', FieldSet.component({
-            label: app.translator.trans('michaelbelgium-discussion-views.forum.viewlist.title'),
-            className: 'LastDiscussionUsers',
-            children: viewList.toArray()
-        }));
+        items.add(
+            'lastDiscussionViewers', 
+            <FieldSet className='LastDiscussionUsers' label={app.translator.trans('michaelbelgium-discussion-views.forum.viewlist.title')}>
+                {viewList.toArray()}
+            </FieldSet>
+        );
     });
 }
