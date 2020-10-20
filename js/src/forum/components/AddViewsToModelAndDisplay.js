@@ -20,8 +20,8 @@ export default function () {
     Discussion.prototype.viewCount = Model.attribute('viewCount');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
-        if(this.props.discussion.attribute('canViewNumber')) {
-            const views = this.props.discussion.viewCount();
+        if(this.attrs.discussion.attribute('canViewNumber')) {
+            const views = this.attrs.discussion.viewCount();
 
             var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views) : views;
             items.add('discussion-views', number);   

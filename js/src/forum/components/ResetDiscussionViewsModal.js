@@ -6,7 +6,7 @@ export default class ResetDiscussionViewsModal extends Modal {
     {
         super.init();
 
-        this.discussion = this.props.discussion;
+        this.discussion = this.attrs.discussion;
         this.currentViewsCount = this.discussion.viewCount();
     }
 
@@ -44,7 +44,7 @@ export default class ResetDiscussionViewsModal extends Modal {
         e.preventDefault();
         this.loading = true;
 
-        this.props.discussion
+        this.attrs.discussion
             .save({ resetViews: true })
             .then(() => { m.redraw(); })
             .catch((reason) => {
