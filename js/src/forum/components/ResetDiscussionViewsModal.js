@@ -2,9 +2,9 @@ import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
 
 export default class ResetDiscussionViewsModal extends Modal {
-    init()
+    oninit(vnode)
     {
-        super.init();
+        super.oninit(vnode);
 
         this.discussion = this.attrs.discussion;
         this.currentViewsCount = this.discussion.viewCount();
@@ -17,12 +17,14 @@ export default class ResetDiscussionViewsModal extends Modal {
                 <div className="Form Form--centered">
                     <p>{app.translator.transChoice('michaelbelgium-discussion-views.forum.modal_resetviews.label', this.currentViewsCount, {count: this.currentViewsCount })}</p>
                     <div className="Form-group">
-                        {Button.component({
-                            className: 'Button Button--primary Button--block',
-                            type: 'submit',
-                            loading: this.loading,
-                            children: app.translator.trans('michaelbelgium-discussion-views.forum.modal_resetviews.submit_button')
-                        })}
+                        {Button.component(
+                            {
+                                className: 'Button Button--primary Button--block',
+                                type: 'submit',
+                                loading: this.loading
+                            }, 
+                            app.translator.trans('michaelbelgium-discussion-views.forum.modal_resetviews.submit_button')
+                        )}
                     </div>
                 </div>
             </div>
@@ -46,10 +48,8 @@ export default class ResetDiscussionViewsModal extends Modal {
 
         this.attrs.discussion
             .save({ resetViews: true })
-            .then(() => { m.redraw(); })
-            .catch((reason) => {
-                this.loading = false;
-                console.log(reason)
+            .catch(() => {
+                this.loaded();
             });
 
         this.hide();
