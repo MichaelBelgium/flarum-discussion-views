@@ -8,7 +8,6 @@ use Flarum\Extend\Locales;
 use Flarum\Extend\Frontend;
 use Flarum\Extend\Model;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Michaelbelgium\Discussionviews\Listeners\AddRelationship;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 
 $settings = app(SettingsRepositoryInterface::class);
@@ -23,9 +22,9 @@ return [
 
     new Locales(__DIR__ . '/locale'),
 
-    (new Model(Discussion::class))->relationship(AddRelationship::RELATIONSHIP, function (AbstractModel $model) {
+    (new Model(Discussion::class))->relationship(Listeners\AddRelationship::RELATIONSHIP, function (AbstractModel $model) {
         return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
-    })->relationship(AddRelationship::RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
+    })->relationship(Listeners\AddRelationship::RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
         return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
     }),
 
