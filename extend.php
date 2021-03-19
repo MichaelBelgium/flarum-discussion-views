@@ -1,7 +1,9 @@
 <?php
 
+use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;
+use Flarum\Extend\ApiSerializer;
 use Michaelbelgium\Discussionviews\Listeners;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Extend\Locales;
@@ -27,6 +29,16 @@ return [
     })->relationship(Listeners\AddRelationship::RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
         return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
     }),
+
+
+    (new ApiSerializer(DiscussionSerializer::class))
+        ->attribute('canReset', function (DiscussionSerializer $serializer, $discussion) {
+            return (bool)$serializer->getActor()->can('discussion.resetViews', $discussion);
+        })->attribute('viewCount', function (DiscussionSerializer $serializer, $discussion) {
+            return $discussion->view_count;
+        })->attribute('canViewNumber', function (DiscussionSerializer $serializer, $discussion) {
+            return (bool)$serializer->getActor()->can('discussion.readViewnumber', $discussion);
+        }),
 
     function (Dispatcher $events) {
         $events->subscribe(Listeners\AddRelationship::class);

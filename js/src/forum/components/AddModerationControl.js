@@ -5,7 +5,7 @@ import ResetDiscussionViewsModal from './ResetDiscussionViewsModal';
 
 export default function () {
     extend(DiscussionControls, 'moderationControls', function(items, discussion) {
-        if(discussion.attribute('canReset') && discussion.viewCount() > 0)
+        if(discussion.canReset() && discussion.viewCount() > 0)
         {
             items.add(
                 'reset',

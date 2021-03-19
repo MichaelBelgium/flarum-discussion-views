@@ -17,10 +17,11 @@ export default function () {
 
     Discussion.prototype.views = Model.hasMany('latestViews');
     Discussion.prototype.canReset = Model.attribute('canReset');
+    Discussion.prototype.canViewNumber = Model.attribute('canViewNumber');
     Discussion.prototype.viewCount = Model.attribute('viewCount');
 
     extend(DiscussionListItem.prototype, 'infoItems', function(items) {
-        if(this.attrs.discussion.attribute('canViewNumber')) {
+        if(this.attrs.discussion.canViewNumber()) {
             const views = this.attrs.discussion.viewCount();
 
             var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views) : views;
