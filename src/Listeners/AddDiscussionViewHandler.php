@@ -13,9 +13,11 @@ use Michaelbelgium\Discussionviews\Models\DiscussionView;
 class AddDiscussionViewHandler
 {
     private $settings;
+    private $events;
 
-    public function __construct(SettingsRepositoryInterface $settings) {
+    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events) {
         $this->settings = $settings;
+        $this->events = $events;
     }
 
     public function __invoke(ShowDiscussionController $controller, Discussion $discussion, $request, $document)
@@ -43,6 +45,6 @@ class AddDiscussionViewHandler
         $discussion->view_count++;
         $discussion->save();
 
-        event(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));
+        $this->events->dispatch(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));
     }
 }

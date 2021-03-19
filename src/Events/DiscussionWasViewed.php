@@ -25,4 +25,14 @@ class DiscussionWasViewed
         $this->viewer = $viewer;
         $this->discussion = $discussion;
     }
+
+    public function getViewer()
+    {
+        return $this->viewer;
+    }
+
+    public function getDiscussion()
+    {
+        return $this->discussion;
+    }
 }
