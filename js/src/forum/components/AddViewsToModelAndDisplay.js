@@ -9,7 +9,6 @@ import abbreviateNumber from 'flarum/utils/abbreviateNumber';
 import DiscussionView from '../models/DiscussionView';
 import avatar from 'flarum/helpers/avatar';
 import ItemList from 'flarum/utils/ItemList';
-import {ucfirst} from 'flarum/utils/string';
 import humanTime from 'flarum/utils/humanTime';
 
 export default function () {
