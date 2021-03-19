@@ -14,8 +14,12 @@ use Flarum\Extend\Model;
 use Flarum\Extend\Settings;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
+use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
 
 $settings = app(SettingsRepositoryInterface::class);
+
+const RELATIONSHIP = 'views'; //$discussion->views()
+const RELATIONSHIP_LATEST = 'latestViews';
 
 return [
     (new Frontend('forum'))
@@ -27,11 +31,12 @@ return [
 
     new Locales(__DIR__ . '/locale'),
 
-    (new Model(Discussion::class))->relationship(Listeners\AddRelationship::RELATIONSHIP, function (AbstractModel $model) {
-        return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
-    })->relationship(Listeners\AddRelationship::RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
-        return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
-    }),
+    (new Model(Discussion::class))
+        ->relationship(RELATIONSHIP, function (AbstractModel $model) {
+            return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
+        })->relationship(RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
+            return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
+        }),
 
     (new Settings)
         ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter', null, true)
@@ -45,12 +50,13 @@ return [
             return $discussion->view_count;
         })->attribute('canViewNumber', function (DiscussionSerializer $serializer, $discussion) {
             return (bool)$serializer->getActor()->can('discussion.readViewnumber', $discussion);
-        }),
+        })->hasMany(RELATIONSHIP_LATEST, DiscussionViewSerializer::class),
+
     (new ApiController(ShowDiscussionController::class))
-        ->prepareDataForSerialization(Listeners\AddDiscussionViewHandler::class),
+        ->prepareDataForSerialization(Listeners\AddDiscussionViewHandler::class)
+        ->addInclude([RELATIONSHIP_LATEST, RELATIONSHIP_LATEST.'.user']),
 
     function (Dispatcher $events) {
-        $events->subscribe(Listeners\AddRelationship::class);
         $events->subscribe(Listeners\AddPopularSort::class);
         $events->subscribe(Listeners\SaveDiscussionFromModal::class);
     }
