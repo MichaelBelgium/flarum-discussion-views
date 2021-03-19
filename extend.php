@@ -1,5 +1,6 @@
 <?php
 
+use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;
@@ -45,10 +46,11 @@ return [
         })->attribute('canViewNumber', function (DiscussionSerializer $serializer, $discussion) {
             return (bool)$serializer->getActor()->can('discussion.readViewnumber', $discussion);
         }),
+    (new ApiController(ShowDiscussionController::class))
+        ->prepareDataForSerialization(Listeners\AddDiscussionViewHandler::class),
 
     function (Dispatcher $events) {
         $events->subscribe(Listeners\AddRelationship::class);
-        $events->subscribe(Listeners\AddDiscussionViewHandler::class);
         $events->subscribe(Listeners\AddPopularSort::class);
         $events->subscribe(Listeners\SaveDiscussionFromModal::class);
     }
