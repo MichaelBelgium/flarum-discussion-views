@@ -17,7 +17,7 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
 
-$settings = app(SettingsRepositoryInterface::class);
+$settings = resolve(SettingsRepositoryInterface::class);
 
 const RELATIONSHIP = 'views'; //$discussion->views()
 const RELATIONSHIP_LATEST = 'latestViews';
