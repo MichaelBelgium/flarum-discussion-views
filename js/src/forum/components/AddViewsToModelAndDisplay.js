@@ -24,7 +24,7 @@ export default function () {
         if(this.attrs.discussion.canViewNumber()) {
             const views = this.attrs.discussion.viewCount();
 
-            var number = app.forum.attribute('mb-discussionviews.abbr_numbers') == 1 ? abbreviateNumber(views) : views;
+            var number = app.forum.attribute('abbrNumber') == 1 ? abbreviateNumber(views) : views;
             items.add('discussion-views', <span>{number}</span>);   
         }
     });
@@ -34,7 +34,7 @@ export default function () {
     })
     
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
-        if(app.forum.attribute('mb-discussionviews.show_viewlist') == 0) return;
+        if(app.forum.attribute('showViewList') == 0) return;
         
         const views = this.discussion.views();
         const viewList = new ItemList();

@@ -3,12 +3,14 @@
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;
+use Flarum\Extend\ApiController;
 use Flarum\Extend\ApiSerializer;
 use Michaelbelgium\Discussionviews\Listeners;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Extend\Locales;
 use Flarum\Extend\Frontend;
 use Flarum\Extend\Model;
+use Flarum\Extend\Settings;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 
@@ -30,6 +32,10 @@ return [
         return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
     }),
 
+    (new Settings)
+        ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter', null, true)
+        ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers', null, false)
+        ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist', null, true),
 
     (new ApiSerializer(DiscussionSerializer::class))
         ->attribute('canReset', function (DiscussionSerializer $serializer, $discussion) {
@@ -45,6 +51,5 @@ return [
         $events->subscribe(Listeners\AddDiscussionViewHandler::class);
         $events->subscribe(Listeners\AddPopularSort::class);
         $events->subscribe(Listeners\SaveDiscussionFromModal::class);
-        $events->subscribe(Listeners\SettingsToForum::class);
     }
 ]; 

@@ -3,7 +3,7 @@ import DiscussionListState from 'flarum/states/DiscussionListState'
 
 export default function () {
     extend(DiscussionListState.prototype, 'sortMap', function (map) {
-        if(app.forum.attribute('mb-discussionviews.show_filter') == 1) {
+        if(app.forum.attribute('toggleFilter') == 1) {
             map.popular = '-view_count';
             map.unpopular = 'view_count';
         }
