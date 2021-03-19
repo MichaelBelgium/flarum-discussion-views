@@ -40,7 +40,7 @@ export default function () {
         const viewList = new ItemList();
 
         $.each(views, function(key, view) {
-            var userName = view.user() === false ? 'Guest' : ucfirst(view.user().username());
+            var userName = view.user() === false ? 'Guest' : view.user().username();
 
             var listitem = 
                 <div className="item-lastUser-content">
