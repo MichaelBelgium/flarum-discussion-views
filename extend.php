@@ -1,5 +1,6 @@
 <?php
 
+use Flarum\Api\Controller\ListDiscussionsController;
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Database\AbstractModel;
@@ -56,8 +57,10 @@ return [
         ->prepareDataForSerialization(Listeners\AddDiscussionViewHandler::class)
         ->addInclude([RELATIONSHIP_LATEST, RELATIONSHIP_LATEST.'.user']),
 
+    (new ApiController(ListDiscussionsController::class))
+        ->addSortField('view_count'),
+
     function (Dispatcher $events) {
-        $events->subscribe(Listeners\AddPopularSort::class);
         $events->subscribe(Listeners\SaveDiscussionFromModal::class);
     }
 ]; 
