@@ -3,7 +3,7 @@
   "description": "Add views to flarum discussions",
   "type": "flarum-extension",
   "require": {
-    "flarum/core": "^0.1.0-beta.14"
+    "flarum/core": "^0.1.0-beta.16"
   },
   "license": "MIT",
   "authors": [
@@ -14,7 +14,8 @@
   ],
   "support": {
     "issues": "https://github.com/MichaelBelgium/flarum-discussion-views/issues",
-    "source": "https://github.com/MichaelBelgium/flarum-discussion-views"
+    "source": "https://github.com/MichaelBelgium/flarum-discussion-views",
+    "forum": "https://discuss.flarum.org/d/26269"
   },
   "autoload": {
     "psr-4": {
@@ -34,6 +35,12 @@
       "discuss": "https://discuss.flarum.org/d/26269"
     }
   },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/MichaelBelgium"
+    }
+  ],
   "suggest": {
     "rooaaar/lang-french-extended": "Includes French translation for this extension",
     "michaelbelgium/flarum-dutch": "Includes Dutch translation for this extension",
