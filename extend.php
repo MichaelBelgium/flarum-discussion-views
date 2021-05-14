@@ -5,8 +5,10 @@ use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Api\Serializer\DiscussionSerializer;
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;
+use Flarum\Discussion\Event\Saving;
 use Flarum\Extend\ApiController;
 use Flarum\Extend\ApiSerializer;
+use Flarum\Extend\Event;
 use Michaelbelgium\Discussionviews\Listeners;
 use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Extend\Locales;
@@ -60,7 +62,6 @@ return [
     (new ApiController(ListDiscussionsController::class))
         ->addSortField('view_count'),
 
-    function (Dispatcher $events) {
-        $events->subscribe(Listeners\SaveDiscussionFromModal::class);
-    }
+    (new Event())
+        ->listen(Saving::class, Listeners\SaveDiscussionFromModal::class),
 ]; 
