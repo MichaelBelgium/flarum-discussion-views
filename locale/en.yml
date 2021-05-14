@@ -9,7 +9,7 @@ michaelbelgium-discussion-views:
     modal_resetviews:
       title: Reset discussion view count
       submit_button: Yes, remove all
-      label: This will remove {count} view of this discussion. Continue?|This will remove {count} views of this discussion. Continue?
+      label: "{count, plural, one {This will remove {count} view of this discussion. Continue?} other {This will remove {count} views of this discussion. Continue?}}"
     discussion_controls:
       resetviews_button: Reset views
     viewlist:

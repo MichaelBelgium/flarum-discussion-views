@@ -15,7 +15,7 @@ export default class ResetDiscussionViewsModal extends Modal {
         return (
             <div className="Modal-body">
                 <div className="Form Form--centered">
-                    <p>{app.translator.transChoice('michaelbelgium-discussion-views.forum.modal_resetviews.label', this.currentViewsCount, {count: this.currentViewsCount })}</p>
+                    <p>{app.translator.trans('michaelbelgium-discussion-views.forum.modal_resetviews.label', {count: this.currentViewsCount })}</p>
                     <div className="Form-group">
                         {Button.component(
                             {
