@@ -39,7 +39,7 @@ export default function () {
         const viewList = new ItemList();
 
         $.each(views, function(key, view) {
-            var userName = view.user() === false ? 'Guest' : view.user().username();
+            var userName = view.user() === false ? app.translator.trans('michaelbelgium-discussion-views.forum.viewlist.guest') : view.user().username();
 
             var listitem = 
                 <div className="item-lastUser-content">

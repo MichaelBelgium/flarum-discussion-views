@@ -14,6 +14,7 @@ michaelbelgium-discussion-views:
       resetviews_button: Reset views
     viewlist:
       title: Latest viewers
+      guest: Guest
   admin:
       permissions:
         reset_views_label: Reset discussion views
