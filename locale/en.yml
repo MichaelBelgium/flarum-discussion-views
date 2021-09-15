@@ -28,5 +28,6 @@ michaelbelgium-discussion-views:
         abbr_numbers_label: Abbreviate view numbers
         show_filter_label: Enable (un)popular sort field
         max_viewcount_label: Maximum viewlist items
+        max_viewcount_text: This applies to the footer viewlist and the sidebar viewlist
         show_viewlist_label: Enable viewlist
         show_footer_viewlist_label: Enable footer viewlist

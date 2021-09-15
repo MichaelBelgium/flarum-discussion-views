@@ -25,7 +25,8 @@ app.initializers.add('michaelbelgium-admin-discussion-views', (app) => {
         }).registerSetting({
             setting: 'michaelbelgium-discussionviews.max_listcount',
             label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.max_viewcount_label'),
-            type: 'number'
+            type: 'number',
+            help: app.translator.trans('michaelbelgium-discussion-views.admin.settings.max_viewcount_text')
         }).registerPermission({
             icon: 'far fa-eye',
             label: app.translator.trans('michaelbelgium-discussion-views.admin.permissions.reset_views_label'),
