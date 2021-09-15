@@ -72,6 +72,8 @@ export default function () {
     });
 
     extend(CommentPost.prototype, 'footerItems', function(items) {
+        if(app.forum.attribute('showFooterViewList') == 0) return;
+        
         const post = this.attrs.post;
         const discussion = post.discussion();
         const views = discussion.views();

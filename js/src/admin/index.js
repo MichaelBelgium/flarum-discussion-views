@@ -19,6 +19,10 @@ app.initializers.add('michaelbelgium-admin-discussion-views', (app) => {
             label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.show_viewlist_label'),
             type: 'boolean'
         }).registerSetting({
+            setting: 'michaelbelgium-discussionviews.show_footer_viewlist',
+            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.show_footer_viewlist_label'),
+            type: 'boolean'
+        }).registerSetting({
             setting: 'michaelbelgium-discussionviews.max_listcount',
             label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.max_viewcount_label'),
             type: 'number'

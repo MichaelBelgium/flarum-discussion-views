@@ -44,7 +44,8 @@ return [
     (new Settings)
         ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter', null, true)
         ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers', null, false)
-        ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist', null, true),
+        ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist', null, true)
+        ->serializeToForum('showFooterViewList', 'michaelbelgium-discussionviews.show_footer_viewlist', null, false),
 
     (new ApiSerializer(DiscussionSerializer::class))
         ->attribute('canReset', function (DiscussionSerializer $serializer, $discussion) {

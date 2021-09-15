@@ -29,3 +29,4 @@ michaelbelgium-discussion-views:
         show_filter_label: Enable (un)popular sort field
         max_viewcount_label: Maximum viewlist items
         show_viewlist_label: Enable viewlist
+        show_footer_viewlist_label: Enable footer viewlist
