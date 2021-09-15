@@ -10,6 +10,12 @@ import DiscussionView from '../models/DiscussionView';
 import avatar from 'flarum/helpers/avatar';
 import ItemList from 'flarum/utils/ItemList';
 import humanTime from 'flarum/utils/humanTime';
+import CommentPost from 'flarum/components/CommentPost';
+import Link from 'flarum/components/Link';
+import app from 'flarum/app';
+import username from 'flarum/helpers/username';
+import icon from 'flarum/helpers/icon';
+import punctuateSeries from 'flarum/helpers/punctuateSeries';
 
 export default function () {
     app.store.models.discussionviews = DiscussionView; //discussionviews = serializer type
@@ -63,5 +69,42 @@ export default function () {
                 {viewList.toArray()}
             </FieldSet>
         );
+    });
+
+    extend(CommentPost.prototype, 'footerItems', function(items) {
+        const post = this.attrs.post;
+        const discussion = post.discussion();
+        const views = discussion.views();
+        const firstPostId = discussion.posts()[0].id();
+
+        if(firstPostId === post.id()) {
+            if(views && views.length > 0) {
+                let names = new Array();
+                let idNames = new Array();
+
+                views.forEach(view => {
+                    if(view.user() !== false && idNames.indexOf(view.user().id()) == -1) {
+                        names.push(
+                            <Link href={app.route.user(view.user())}>
+                                {view.user() === app.session.user ? app.translator.trans('michaelbelgium-discussion-views.forum.post.you') : username(view.user())}
+                            </Link>
+                        );
+
+                        idNames.push(view.user().id());
+                    }
+                });
+
+                if(names.length > 0) {
+                    items.add('viewed', (
+                        <div className="Post-Discussion-viewedBy">
+                            {icon('fas fa-eye')}
+                            {app.translator.trans('michaelbelgium-discussion-views.forum.post.viewed_by', {
+                                users: punctuateSeries(names)
+                            })}
+                        </div>
+                    ));
+                }
+            }    
+        }
     });
 }

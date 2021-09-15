@@ -47,3 +47,7 @@ Smaller screens:
 ## Viewlist
 
 ![Imgur](https://i.imgur.com/Nn012B0.png)
+
+## Footer viewlist
+
+![Imgur](https://i.imgur.com/GRfMNVn.png)

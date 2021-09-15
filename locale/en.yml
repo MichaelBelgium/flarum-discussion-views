@@ -15,6 +15,9 @@ michaelbelgium-discussion-views:
     viewlist:
       title: Latest viewers
       guest: Guest
+    post:
+      viewed_by: "{users} viewed this."
+      you: => core.ref.you
   admin:
       permissions:
         reset_views_label: Reset discussion views
