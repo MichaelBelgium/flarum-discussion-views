@@ -36,18 +36,18 @@ Smaller screens:
 
 ![Imgur](https://i.imgur.com/es4NYHI.png)
 
-## Reset the view count
+Reset the view count
 
 ![Imgur](https://i.imgur.com/iVu92yT.png)
 
-## Extension settings
+Extension settings
 
 ![Imgur](https://i.imgur.com/3jUSrUd.png)
 
-## Viewlist
+Viewlist
 
 ![Imgur](https://i.imgur.com/Nn012B0.png)
 
-## Footer viewlist
+Footer viewlist
 
 ![Imgur](https://i.imgur.com/GRfMNVn.png)
