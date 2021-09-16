@@ -9,6 +9,7 @@ import CommentPost from 'flarum/components/CommentPost';
 import Link from 'flarum/components/Link';
 import DiscussionPage from 'flarum/components/DiscussionPage';
 import FieldSet from 'flarum/components/FieldSet';
+import UniqueViews from '../helpers/UniqueViews';
 
 export default function () {
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
@@ -55,20 +56,13 @@ export default function () {
         if(firstPostId === post.id()) {
             if(views && views.length > 0) {
                 const limit = 5;
-                
-                let names = new Array();
-                let idNames = new Array();
 
-                views.forEach(view => {
-                    if(view.user() !== false && idNames.indexOf(view.user().id()) == -1) {
-                        names.push(
-                            <Link href={app.route.user(view.user())}>
-                                {view.user() === app.session.user ? app.translator.trans('michaelbelgium-discussion-views.forum.post.you') : username(view.user())}
-                            </Link>
-                        );
-
-                        idNames.push(view.user().id());
-                    }
+                const names = UniqueViews(views, limit).map(user => {
+                    return (
+                        <Link href={app.route.user(user)}>
+                            {user === app.session.user ? app.translator.trans('michaelbelgium-discussion-views.forum.post.you') : username(user)}
+                        </Link>
+                    )
                 });
 
 
