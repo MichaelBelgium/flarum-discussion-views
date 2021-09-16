@@ -18,6 +18,8 @@ michaelbelgium-discussion-views:
     post:
       viewed_by: "{users} viewed this."
       you: => core.ref.you
+      others_link: => core.ref.some_others
+      modal_title_text: Users who last viewed this discussion
   admin:
       permissions:
         reset_views_label: Reset discussion views

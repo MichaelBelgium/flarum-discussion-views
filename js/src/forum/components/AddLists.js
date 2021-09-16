@@ -9,6 +9,7 @@ import CommentPost from 'flarum/components/CommentPost';
 import Link from 'flarum/components/Link';
 import DiscussionPage from 'flarum/components/DiscussionPage';
 import FieldSet from 'flarum/components/FieldSet';
+import PostDiscussionViewsModal from '../components/PostDiscussionViewsModal';
 import UniqueViews from '../helpers/UniqueViews';
 
 export default function () {
@@ -65,7 +66,19 @@ export default function () {
                     )
                 });
 
+                if(views.length > limit)
+                {
+                    const count = views.length - limit;
 
+                    names.push(
+                        <Link href="#" onclick={e => {
+                            e.preventDefault();
+                            app.modal.show(PostDiscussionViewsModal, {post});
+                        }}>
+                            {app.translator.trans('michaelbelgium-discussion-views.forum.post.others_link', {count})}
+                        </Link>
+                    );
+                }
 
                 if(names.length > 0) {
                     items.add('viewed', (
