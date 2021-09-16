@@ -18,7 +18,7 @@ php flarum cache:clear
 If you would like to translate this extension to your language, make a PR in the corresponding language pack. 
 
 # Features
-* Tracks how much a discussion has been viewed and displays it on the discussionlist
+* Tracks how much a discussion has been viewed and displays it on a discussion page
 * Extension settings
 * Adds 2 sorting options: popular and unpopular
 * Adds an event which developers can listen for: `DiscussionWasViewed`
@@ -51,3 +51,4 @@ Viewlist
 Footer viewlist
 
 ![Imgur](https://i.imgur.com/GRfMNVn.png)
+![imgur](https://i.imgur.com/vi49UbV.png)
