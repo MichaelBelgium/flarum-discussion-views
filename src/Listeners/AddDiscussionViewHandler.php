@@ -33,6 +33,8 @@ class AddDiscussionViewHandler
         
         if(!$request->getAttribute('actor')->isGuest()) {
             $view->user()->associate($request->getAttribute('actor'));
+        } elseif(!$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
+            return;
         }
 
         $view->discussion()->associate($discussion);

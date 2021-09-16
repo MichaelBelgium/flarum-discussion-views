@@ -27,6 +27,7 @@ michaelbelgium-discussion-views:
       settings:
         title: Discussionviews settings
         track_unique_label: Track unique views
+        track_guests: Track guests
         abbr_numbers_label: Abbreviate view numbers
         show_filter_label: Enable (un)popular sort field
         max_viewcount_label: Maximum viewlist items
