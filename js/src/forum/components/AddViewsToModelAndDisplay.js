@@ -11,6 +11,7 @@ export default function () {
     app.store.models.discussionviews = DiscussionView; //discussionviews = serializer type
 
     Discussion.prototype.views = Model.hasMany('latestViews');
+    Discussion.prototype.uniqueViews = Model.hasMany('uniqueViews');
     Discussion.prototype.canReset = Model.attribute('canReset');
     Discussion.prototype.canViewNumber = Model.attribute('canViewNumber');
     Discussion.prototype.viewCount = Model.attribute('viewCount');

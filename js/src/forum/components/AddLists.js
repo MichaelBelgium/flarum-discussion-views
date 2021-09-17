@@ -10,7 +10,6 @@ import Link from 'flarum/components/Link';
 import DiscussionPage from 'flarum/components/DiscussionPage';
 import FieldSet from 'flarum/components/FieldSet';
 import PostDiscussionViewsModal from '../components/PostDiscussionViewsModal';
-import UniqueViews from '../helpers/UniqueViews';
 
 export default function () {
     extend(DiscussionPage.prototype, 'sidebarItems', function(items) {
@@ -51,17 +50,17 @@ export default function () {
         
         const post = this.attrs.post;
         const discussion = post.discussion();
-        const views = discussion.views();
+        const views = discussion.uniqueViews();
         const firstPostId = discussion.posts()[0].id();
 
         if(firstPostId === post.id()) {
             if(views && views.length > 0) {
                 const limit = 5;
 
-                const names = UniqueViews(views, limit).map(user => {
+                const names = views.slice(0, limit).map(view => {
                     return (
-                        <Link href={app.route.user(user)}>
-                            {user === app.session.user ? app.translator.trans('michaelbelgium-discussion-views.forum.post.you') : username(user)}
+                        <Link href={app.route.user(view.user())}>
+                            {view.user() === app.session.user ? app.translator.trans('michaelbelgium-discussion-views.forum.post.you') : username(view.user())}
                         </Link>
                     )
                 });

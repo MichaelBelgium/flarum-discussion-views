@@ -1,6 +1,5 @@
 import Modal from 'flarum/common/components/Modal';
 import Link from 'flarum/components/Link';
-import UniqueViews from '../helpers/UniqueViews';
 import username from 'flarum/helpers/username';
 import avatar from 'flarum/helpers/avatar';
 
@@ -14,15 +13,17 @@ export default class PostDiscussionViewsModal extends Modal {
   }
 
   content() {
-    const views = this.attrs.post.discussion().views();
+    const views = this.attrs.post.discussion().uniqueViews();
 
-    const names = UniqueViews(views).map(user => {
-        return (<li>
-            <Link href={app.route.user(user)}>
-                {avatar(user)} {' '}
-                {username(user)}
-            </Link>
-        </li>)
+    const names = views.map(view => {
+      const user = view.user();
+
+      return (<li>
+          <Link href={app.route.user(user)}>
+              {avatar(user)} {' '}
+              {username(user)}
+          </Link>
+      </li>)
     });
 
     return (
