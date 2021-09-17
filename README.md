@@ -42,7 +42,7 @@ Reset the view count
 
 Extension settings
 
-![Imgur](https://i.imgur.com/3jUSrUd.png)
+![Imgur](https://i.imgur.com/FPyFt1q.png)
 
 Viewlist
 
