@@ -41,7 +41,7 @@ return [
         })->relationship(DV_RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
             return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
         })->relationship(DV_RELATIONSHIP_UNIQUE, function (AbstractModel $model) use ($settings) {
-            return $model->views()->groupBy('user_id')->havingRaw('user_id IS NOT NULL')->orderByRaw('MAX(visited_at) DESC')
+            return $model->hasMany(DiscussionView::class)->groupBy('user_id')->havingRaw('user_id IS NOT NULL')->orderByRaw('MAX(visited_at) DESC')
                 ->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
         }),
 
