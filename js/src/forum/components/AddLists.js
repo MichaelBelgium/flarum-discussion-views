@@ -51,6 +51,8 @@ export default function () {
         const post = this.attrs.post;
         const discussion = post.discussion();
         const views = discussion.uniqueViews();
+
+        if(discussion.posts() === false) return;
         const firstPostId = discussion.posts()[0].id();
 
         if(firstPostId === post.id()) {
