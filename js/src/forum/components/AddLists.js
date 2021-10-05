@@ -52,7 +52,7 @@ export default function () {
         const discussion = post.discussion();
         const views = discussion.uniqueViews();
 
-        if(discussion.posts() === false) return;
+        if(discussion.posts() === false || discussion.posts().length == 0) return;
         const firstPostId = discussion.posts()[0].id();
 
         if(firstPostId === post.id()) {
