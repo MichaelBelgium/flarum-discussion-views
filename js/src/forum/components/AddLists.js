@@ -31,7 +31,7 @@ export default function () {
                 </div>;
 
             if(view.user() !== false) {
-                listitem = <a href={app.route.user(view.user())}>{listitem}</a>;
+                listitem = <Link href={app.route.user(view.user())}>{listitem}</Link>;
             }
 
             viewList.add('lastUser-' + key, listitem);
