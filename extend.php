@@ -53,11 +53,11 @@ return [
 
     (new ApiSerializer(DiscussionSerializer::class))
         ->attribute('canReset', function (DiscussionSerializer $serializer, $discussion) {
-            return (bool)$serializer->getActor()->can('discussion.resetViews', $discussion);
+            return (bool)$serializer->getActor()->can('resetViews', $discussion);
         })->attribute('viewCount', function (DiscussionSerializer $serializer, $discussion) {
             return $discussion->view_count;
         })->attribute('canViewNumber', function (DiscussionSerializer $serializer, $discussion) {
-            return (bool)$serializer->getActor()->can('discussion.readViewnumber', $discussion);
+            return (bool)$serializer->getActor()->can('readViewnumber', $discussion);
         })->hasMany(DV_RELATIONSHIP_LATEST, DiscussionViewSerializer::class)
         ->hasMany(DV_RELATIONSHIP_UNIQUE, DiscussionViewSerializer::class),
 
