@@ -1,12 +1,11 @@
 .item-discussion-views {
   font-size: 14px;
-  position: absolute;
-  right: 37px;
-  color: var(--control-color);
-}
+  float: right;
+  margin-right: -65px;
+  width: 50px;
+  color: var(--muted-color);
 
-@media (min-width: 768px) {
-  .item-discussion-views:before {
+  ::before {
     font-family: 'Font Awesome 5 Free';
     font-size: inherit;
     content: "\f06e";
@@ -14,17 +13,16 @@
   }
 }
 
-@media (max-width: 767px) {
+@media @phone {
   .item-discussion-views {
+    float: none;
     background: var(--control-bg);
     color: var(--control-color);
     border-radius: var(--border-radius);
-    font-size: 12px;
+    font-size: 11px;
     padding: 2px 6px;
-    font-size: 12px;
-    position: absolute;
-    right: 15px;
-    top: 35px;
+    margin-left: 5px;
+    width: auto;
   }
 }
 
