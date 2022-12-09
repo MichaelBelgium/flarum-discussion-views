@@ -1,6 +1,6 @@
 # Flarum discussion views
 
-This is an extension for the [flarum forum software](http://flarum.org) where you can enable and track how many times a discussion has been viewed.
+This is an extension for the [flarum forum software](http://flarum.org) where you can track how many times a discussion has been viewed.
 
 # Installation
 Execute this command in your flarum root: `composer require michaelbelgium/flarum-discussion-views`
@@ -19,7 +19,7 @@ If you would like to translate this extension to your language, make a PR in the
 
 # Features
 * Tracks how much a discussion has been viewed and displays it on a discussion page
-* Extension settings
+* Plenty of extension settings
 * Adds 2 sorting options: popular and unpopular
 * Adds an event which developers can listen for: `DiscussionWasViewed`
 * Adds new permissions:
