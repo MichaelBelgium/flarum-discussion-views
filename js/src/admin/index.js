@@ -8,11 +8,11 @@ app.initializers.add('michaelbelgium-admin-discussion-views', (app) => {
             type: 'boolean'
         }).registerSetting({
             setting: 'michaelbelgium-discussionviews.ignore_crawlers',
-            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.ignore_crawlers'),
+            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.ignore_crawlers_label'),
             type: 'boolean'
         }).registerSetting({
             setting: 'michaelbelgium-discussionviews.track_guests',
-            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.track_guests'),
+            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.track_guests_label'),
             type: 'boolean'
         }).registerSetting({
             setting: 'michaelbelgium-discussionviews.abbr_numbers',
