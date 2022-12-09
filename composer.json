@@ -3,7 +3,8 @@
   "description": "Add views to flarum discussions",
   "type": "flarum-extension",
   "require": {
-    "flarum/core": "^1.0"
+    "flarum/core": "^1.0",
+    "jaybizzle/crawler-detect": "^1.2"
   },
   "license": "MIT",
   "authors": [

@@ -7,6 +7,10 @@ app.initializers.add('michaelbelgium-admin-discussion-views', (app) => {
             label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.track_unique_label'),
             type: 'boolean'
         }).registerSetting({
+            setting: 'michaelbelgium-discussionviews.ignore_crawlers',
+            label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.ignore_crawlers'),
+            type: 'boolean'
+        }).registerSetting({
             setting: 'michaelbelgium-discussionviews.track_guests',
             label: app.translator.trans('michaelbelgium-discussion-views.admin.settings.track_guests'),
             type: 'boolean'

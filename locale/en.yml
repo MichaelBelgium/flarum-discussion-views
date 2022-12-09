@@ -34,3 +34,4 @@ michaelbelgium-discussion-views:
         max_viewcount_text: This applies to the footer viewlist and the sidebar viewlist
         show_viewlist_label: Enable viewlist
         show_footer_viewlist_label: Enable footer viewlist
+        ignore_crawlers: Ignore bots/crawlers
