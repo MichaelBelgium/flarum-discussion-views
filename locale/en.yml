@@ -27,11 +27,16 @@ michaelbelgium-discussion-views:
       settings:
         title: Discussionviews settings
         track_unique_label: Track unique views
+        track_unique_text: Increase views based on ip-address
         track_guests_label: Track guests
         abbr_numbers_label: Abbreviate view numbers
+        abbr_numbers_text: If enabled, high view numbers will be abbreviated (eg 1000 = 1K)
         show_filter_label: Enable (un)popular sort field
         max_viewcount_label: Maximum viewlist items
-        max_viewcount_text: This applies to the footer viewlist and the sidebar viewlist
+        max_viewcount_text: Set a maximum amount of users in a viewlist (applies to footer and sidebar viewlist)
         show_viewlist_label: Enable viewlist
+        show_viewlist_text: Enable a list of latest viewers in the sidebar of a discussion
         show_footer_viewlist_label: Enable footer viewlist
+        show_footer_viewlist_text: Enable a list of viewers in the footer of the initial post of a discussion
         ignore_crawlers_label: Ignore bots/crawlers
+        ignore_crawlers_text: Prevents bots and crawlers to increase view count
