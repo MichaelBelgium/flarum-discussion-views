@@ -46,6 +46,7 @@ return [
         }),
 
     (new Settings)
+        ->default('michaelbelgium-discussionviews.ignore_crawlers', false)
         ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter', null, true)
         ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers', null, false)
         ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist', null, true)

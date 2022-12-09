@@ -10,6 +10,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
+use Psr\Http\Message\ServerRequestInterface;
 
 class AddDiscussionViewHandler
 {
@@ -21,15 +22,19 @@ class AddDiscussionViewHandler
         $this->events = $events;
     }
 
-    public function __invoke(ShowDiscussionController $controller, Discussion $discussion, $request, $document)
+    public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
     {
-        $crDetect = new CrawlerDetect($request->getHeader('User-Agent'));
+        if($this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
+        {
+            $crDetect = new CrawlerDetect($request->getHeader('User-Agent'));
 
-        if ($crDetect->isCrawler()) {
-            return;
+            if ($crDetect->isCrawler()) {
+                return;
+            }
         }
 
-        if($this->settings->get('michaelbelgium-discussionviews.track_unique', false)) {
+        if($this->settings->get('michaelbelgium-discussionviews.track_unique', false))
+        {
             $existingViews = $discussion->views()->where('ip', $_SERVER['REMOTE_ADDR'])->get();
             if($existingViews->count() > 0) {
                 return;
