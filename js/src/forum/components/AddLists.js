@@ -52,9 +52,7 @@ export default function () {
         const discussion = post.discussion();
         const views = discussion.uniqueViews();
         const firstPost = discussion.posts()[0];
-
-        console.log(firstPost);
-
+        
         if(firstPost === undefined) return; //if first post isn't loaded
 
         if(firstPost.id() === post.id()) {
