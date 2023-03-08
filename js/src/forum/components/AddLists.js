@@ -51,11 +51,13 @@ export default function () {
         const post = this.attrs.post;
         const discussion = post.discussion();
         const views = discussion.uniqueViews();
+        const firstPost = discussion.posts()[0];
 
-        if(discussion.posts() === false || discussion.posts().length == 0) return;
-        const firstPostId = discussion.posts()[0].id();
+        console.log(firstPost);
 
-        if(firstPostId === post.id()) {
+        if(firstPost === undefined) return; //if first post isn't loaded
+
+        if(firstPost.id() === post.id()) {
             if(views && views.length > 0) {
                 const limit = 5;
 
