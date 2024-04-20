@@ -7,6 +7,7 @@ use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Discussion\Discussion;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
@@ -33,7 +34,9 @@ class AddDiscussionViewHandler
             }
         }
 
-        $clientIp = $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+        $clientIp = Arr::get($request->getServerParams(), 'HTTP_CLIENT_IP') ??
+            Arr::get($request->getServerParams(), 'HTTP_X_FORWARDED_FOR') ??
+            Arr::get($request->getServerParams(), 'REMOTE_ADDR');
 
         if($this->settings->get('michaelbelgium-discussionviews.track_unique', false))
         {
