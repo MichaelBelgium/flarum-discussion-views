@@ -33,9 +33,17 @@ class AddDiscussionViewHandler
             }
         }
 
+        $clientIp = $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+
         if($this->settings->get('michaelbelgium-discussionviews.track_unique', false))
         {
-            $existingViews = $discussion->views()->where('ip', $_SERVER['REMOTE_ADDR'])->get();
+            if($clientIp === null)
+            {
+                resolve('log')->warn('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Unable to get client IP => not counting this view.');
+                return;
+            }
+
+            $existingViews = $discussion->views()->where('ip', $clientIp)->get();
             if($existingViews->count() > 0) {
                 return;
             }
@@ -50,7 +58,7 @@ class AddDiscussionViewHandler
         }
 
         $view->discussion()->associate($discussion);
-        $view->ip = $_SERVER['REMOTE_ADDR'];
+        $view->ip = $clientIp;
         $view->visited_at = Carbon::now();
 
         $discussion->views()->save($view);
