@@ -67,7 +67,7 @@ class AddDiscussionViewHandler
         $discussion->views()->save($view);
 
         //for the (un)popular filter
-        $discussion->view_count++;
+        $discussion->increment('view_count');
         $discussion->save();
 
         $this->events->dispatch(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));
