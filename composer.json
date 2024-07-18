@@ -36,6 +36,9 @@
       "discuss": "https://discuss.flarum.org/d/26269"
     }
   },
+  "conflict": {
+    "flarumite/simple-discussion-views": "*"
+  },
   "funding": [
     {
       "type": "github",
