@@ -3,6 +3,7 @@ import DiscussionListItem from "flarum/forum/components/DiscussionListItem";
 import DiscussionList from "flarum/forum/components/DiscussionList";
 import abbreviateNumber from "flarum/common/utils/abbreviateNumber";
 import app from "flarum/forum/app";
+import icon from "flarum/common/helpers/icon";
 
 export default function () {
   extend(DiscussionListItem.prototype, "infoItems", function (items) {
@@ -14,7 +15,7 @@ export default function () {
           ? abbreviateNumber(views)
           : views;
 
-      items.add("discussion-views", m("span", number));
+      items.add("discussion-views", m("span", [icon("far fa-eye"), number]));
     }
   });
 
