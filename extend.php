@@ -8,9 +8,10 @@ use Flarum\Discussion\Discussion;
 use Flarum\Discussion\Event\Saving;
 use Flarum\Extend\ApiController;
 use Flarum\Extend\ApiSerializer;
+use Flarum\Extend\Conditional;
 use Flarum\Extend\Event;
+use FoF\MergeDiscussions\Events\MergingDiscussions;
 use Michaelbelgium\Discussionviews\Listeners;
-use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Extend\Locales;
 use Flarum\Extend\Frontend;
 use Flarum\Extend\Model;
@@ -81,4 +82,12 @@ return [
 
     (new Event())
         ->listen(Saving::class, Listeners\SaveDiscussionFromModal::class),
-]; 
+
+    (new Conditional())
+        ->whenExtensionEnabled('fof-merge-discussions', function() {
+            return [
+                (new Event())
+                    ->listen(MergingDiscussions::class, Listeners\MergeDiscussionHandler::class),
+            ];
+        })
+];

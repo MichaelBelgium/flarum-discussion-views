@@ -5,6 +5,7 @@ namespace Michaelbelgium\Discussionviews\Listeners;
 use Carbon\Carbon;
 use Flarum\Api\Controller\ShowDiscussionController;
 use Flarum\Discussion\Discussion;
+use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Arr;
@@ -17,10 +18,12 @@ class AddDiscussionViewHandler
 {
     private $settings;
     private $events;
+    private $extensionManager;
 
-    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events) {
+    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events, ExtensionManager $extensionManager) {
         $this->settings = $settings;
         $this->events = $events;
+        $this->extensionManager = $extensionManager;
     }
 
     public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
@@ -34,6 +37,18 @@ class AddDiscussionViewHandler
             }
         }
 
+        //The extension fof/merge-discussions does an api call to get info of a discussion when merging discussions, but it shouldn't count as a view
+        //So if the extension is enabled and if the query parameter bySlug is set - which only is set when going to a discussion page manually and not through the api
+        if ($this->extensionManager->isEnabled('fof-merge-discussions'))
+        {
+            $bySlug = Arr::get($request->getQueryParams(), 'bySlug', false);
+
+            if (!$bySlug) {
+                resolve('log')->info('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
+                return;
+            }
+        }
+
         $clientIp = Arr::get($request->getServerParams(), 'HTTP_CLIENT_IP') ??
             Arr::get($request->getServerParams(), 'HTTP_X_FORWARDED_FOR') ??
             Arr::get($request->getServerParams(), 'REMOTE_ADDR');
@@ -42,7 +57,7 @@ class AddDiscussionViewHandler
         {
             if($clientIp === null)
             {
-                resolve('log')->warn('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Unable to get client IP => not counting this view.');
+                resolve('log')->warn('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Unable to get client IP => not counting this view for discussion '. $discussion->id .'.');
                 return;
             }
 
@@ -67,7 +82,7 @@ class AddDiscussionViewHandler
         $discussion->views()->save($view);
 
         //for the (un)popular filter
-        $discussion->view_count++;
+        $discussion->increment('view_count');
         $discussion->save();
 
         $this->events->dispatch(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));

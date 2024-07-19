@@ -6,6 +6,9 @@
     "flarum/core": "^1.0",
     "jaybizzle/crawler-detect": "^1.2"
   },
+  "require-dev": {
+    "fof/merge-discussions": "^1.0"
+  },
   "license": "MIT",
   "authors": [
     {
@@ -30,11 +33,17 @@
         "name": "far fa-eye",
         "backgroundColor": "#88CC23",
         "color": "#fff"
-      }
+      },
+      "optional-dependencies": [
+        "fof/merge-discussions"
+      ]
     },
     "flagrow": {
       "discuss": "https://discuss.flarum.org/d/26269"
     }
+  },
+  "conflict": {
+    "flarumite/simple-discussion-views": "*"
   },
   "funding": [
     {
