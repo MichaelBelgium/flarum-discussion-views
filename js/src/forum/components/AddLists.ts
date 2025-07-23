@@ -26,7 +26,7 @@ export default function () {
           ? app.translator.trans(
               "michaelbelgium-discussion-views.forum.viewlist.guest",
             )
-          : view.user().username();
+          : (view.user()?.attribute('displayName') ? view.user().attribute('displayName') : view.user().username());
 
       let listitem = m("div", { className: "item-lastUser-content" }, [
         avatar(<User>view.user()),
