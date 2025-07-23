@@ -31,7 +31,7 @@ export default function () {
       let listitem = m("div", { className: "item-lastUser-content" }, [
         avatar(<User>view.user()),
         m("div", [
-          userName,
+          m("p", userName),
           m(
             "span",
             {
