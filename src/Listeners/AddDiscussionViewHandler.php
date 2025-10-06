@@ -13,18 +13,16 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 class AddDiscussionViewHandler
 {
-    private $settings;
-    private $events;
-    private $extensionManager;
-
-    public function __construct(SettingsRepositoryInterface $settings, Dispatcher $events, ExtensionManager $extensionManager) {
-        $this->settings = $settings;
-        $this->events = $events;
-        $this->extensionManager = $extensionManager;
-    }
+    public function __construct(
+        private readonly SettingsRepositoryInterface $settings,
+        private readonly Dispatcher $events,
+        private readonly ExtensionManager $extensionManager,
+        private readonly LoggerInterface $logger,
+    ) {}
 
     public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
     {
@@ -44,7 +42,7 @@ class AddDiscussionViewHandler
             $bySlug = Arr::get($request->getQueryParams(), 'bySlug', false);
 
             if (!$bySlug) {
-                resolve('log')->info('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
+                $this->logger->info(__CLASS__ . ': Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
                 return;
             }
         }
@@ -57,7 +55,7 @@ class AddDiscussionViewHandler
         {
             if($clientIp === null)
             {
-                resolve('log')->warn('Michaelbelgium\Discussionviews\Listeners\AddDiscussionViewHandler: Unable to get client IP => not counting this view for discussion '. $discussion->id .'.');
+                $this->logger->warning(__CLASS__ . ': Unable to get client IP => not counting this view for discussion '. $discussion->id .'.');
                 return;
             }
 
