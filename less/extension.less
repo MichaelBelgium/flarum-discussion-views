@@ -1,8 +1,8 @@
 .item-discussion-views {
   font-size: 14px;
-  float: right;
-  margin-right: -65px;
-  width: 50px;
+  position: absolute;
+  right: 0;
+  width: 65px;
   color: var(--muted-color);
 
   .icon {
@@ -12,14 +12,18 @@
 
 @media @phone {
   .item-discussion-views {
-    float: none;
+    position: absolute;
     background: var(--control-bg);
     color: var(--control-color);
     border-radius: var(--border-radius);
     font-size: 11px;
     padding: 2px 6px;
-    margin-left: 5px;
-    width: auto;
+    right: 15px;
+    width: 20px;
+
+    .icon {
+      display: none;
+    }
   }
 }
 
