@@ -43,7 +43,8 @@
     }
   },
   "conflict": {
-    "flarumite/simple-discussion-views": "*"
+    "flarumite/simple-discussion-views": "*",
+    "fof/discussion-views": "*"
   },
   "funding": [
     {
