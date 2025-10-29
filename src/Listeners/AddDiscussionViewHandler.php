@@ -17,12 +17,22 @@ use Psr\Log\LoggerInterface;
 
 class AddDiscussionViewHandler
 {
+    private LoggerInterface $logger;
+    private ExtensionManager $extensionManager;
+    private Dispatcher $events;
+    private SettingsRepositoryInterface $settings;
+
     public function __construct(
-        private readonly SettingsRepositoryInterface $settings,
-        private readonly Dispatcher $events,
-        private readonly ExtensionManager $extensionManager,
-        private readonly LoggerInterface $logger,
-    ) {}
+        SettingsRepositoryInterface $settings,
+        Dispatcher $events,
+        ExtensionManager $extensionManager,
+        LoggerInterface $logger
+    ) {
+        $this->settings = $settings;
+        $this->events = $events;
+        $this->extensionManager = $extensionManager;
+        $this->logger = $logger;
+    }
 
     public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
     {
