@@ -1,60 +1,57 @@
 {
-  "name": "michaelbelgium/flarum-discussion-views",
-  "description": "Add views to flarum discussions",
-  "type": "flarum-extension",
-  "require": {
-    "flarum/core": "^1.0",
-    "jaybizzle/crawler-detect": "^1.2"
-  },
-  "require-dev": {
-    "fof/merge-discussions": "^1.0"
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Michael V.",
-      "email": "michael@michaelbelgium.me"
-    }
-  ],
-  "support": {
-    "issues": "https://github.com/MichaelBelgium/flarum-discussion-views/issues",
-    "source": "https://github.com/MichaelBelgium/flarum-discussion-views",
-    "forum": "https://discuss.flarum.org/d/26269"
-  },
-  "autoload": {
-    "psr-4": {
-      "Michaelbelgium\\Discussionviews\\": "src/"
-    }
-  },
-  "extra": {
-    "flarum-extension": {
-      "title": "Discussion views",
-      "icon": {
-        "name": "far fa-eye",
-        "backgroundColor": "#88CC23",
-        "color": "#fff"
-      },
-      "optional-dependencies": [
-        "fof/merge-discussions"
-      ]
+    "name": "michaelbelgium/flarum-discussion-views",
+    "description": "Add views to flarum discussions",
+    "type": "flarum-extension",
+    "require": {
+        "php": "^8.4",
+        "flarum/core": "^2.0.0-rc.1",
+        "jaybizzle/crawler-detect": "^1.2"
     },
-    "flagrow": {
-      "discuss": "https://discuss.flarum.org/d/26269"
-    }
-  },
-  "conflict": {
-    "flarumite/simple-discussion-views": "*",
-    "fof/discussion-views": "*"
-  },
-  "funding": [
-    {
-      "type": "github",
-      "url": "https://github.com/sponsors/MichaelBelgium"
-    }
-  ],
-  "suggest": {
-    "flarum-lang/french": "Includes French translation for this extension",
-    "flarum-lang/dutch": "Includes Dutch translation for this extension",
-    "flarum-lang/polish": "Includes Polish translation for this extension"
-  }
+    "require-dev": {
+        "fof/merge-discussions": "^2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael V.",
+            "email": "michael@michaelbelgium.me"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/MichaelBelgium/flarum-discussion-views/issues",
+        "source": "https://github.com/MichaelBelgium/flarum-discussion-views",
+        "forum": "https://discuss.flarum.org/d/26269"
+    },
+    "autoload": {
+        "psr-4": {
+            "Michaelbelgium\\Discussionviews\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Discussion views",
+            "icon": {
+                "name": "far fa-eye",
+                "backgroundColor": "#88CC23",
+                "color": "#fff"
+            },
+            "optional-dependencies": [
+                "fof/merge-discussions"
+            ]
+        },
+        "flagrow": {
+            "discuss": "https://discuss.flarum.org/d/26269"
+        }
+    },
+    "conflict": {
+        "flarumite/simple-discussion-views": "*",
+        "fof/discussion-views": "*"
+    },
+    "minimum-stability": "beta",
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/MichaelBelgium"
+        }
+    ]
 }
