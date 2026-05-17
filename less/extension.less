@@ -1,52 +1,17 @@
-.item-discussion-views {
-  font-size: 14px;
-  position: absolute;
-  right: 0;
-  width: 65px;
-  color: var(--muted-color);
+.FieldSet.LastDiscussionUsers {
+  div.item-lastUser-content {
+    display: flex;
+    justify-content: space-between;
 
-  .icon {
-    margin-right: 5px;
-  }
-}
-
-@media @phone {
-  .item-discussion-views {
-    position: absolute;
-    background: var(--control-bg);
-    color: var(--control-color);
-    border-radius: var(--border-radius);
-    font-size: 11px;
-    padding: 2px 6px;
-    right: 15px;
-    width: fit-content;
-    margin-top: .25em;
-    
-    .icon {
-      display: none;
-    }
-  }
-}
-
-fieldset.LastDiscussionUsers {
-  ul {
-    list-style-type: none;
-    padding: 0;
-
-    div.item-lastUser-content {
+    div {
+      flex-direction: column;
       display: flex;
       justify-content: space-between;
+      align-items: flex-end;
+      margin-left: 5px;
 
-      div {
-        flex-direction: column;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-left: 5px;
-
-        span.lastUser-visited {
-          font-size: .8em;
-        }
+      span.lastUser-visited {
+        font-size: .8em;
       }
     }
   }
