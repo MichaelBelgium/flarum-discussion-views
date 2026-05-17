@@ -12,12 +12,12 @@ export default function () {
 
       items.add(
         "discussion-views",
-        <button class="DiscussionListItem-stats-item DiscussionListItem-count Button--ua-reset">
+        <span class="DiscussionListItem-stats-item DiscussionListItem-count DiscussionListItem-views">
           <span class="DiscussionListItem-stats-item-icon">
             <Icon name="far fa-eye" />
           </span>
           <span class="DiscussionListItem-stats-item-label">{number}</span>
-        </button>,
+        </span>,
       );
     }
   });
