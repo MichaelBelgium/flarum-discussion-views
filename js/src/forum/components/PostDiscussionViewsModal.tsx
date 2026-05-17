@@ -1,7 +1,7 @@
 import Modal, { IInternalModalAttrs } from "flarum/common/components/Modal";
 import Link from "flarum/common/components/Link";
 import username from "flarum/common/helpers/username";
-import avatar from "flarum/common/helpers/avatar";
+import Avatar from "flarum/common/components/Avatar";
 import app from "flarum/forum/app";
 import Mithril from "mithril";
 import Post from "flarum/common/models/Post";
@@ -9,18 +9,14 @@ import Post from "flarum/common/models/Post";
 export interface IPostDiscussionViewsModalAttrs extends IInternalModalAttrs {
   post: Post;
 }
-export default class PostDiscussionViewsModal<
-  CustomAttrs extends
-    IPostDiscussionViewsModalAttrs = IPostDiscussionViewsModalAttrs,
-> extends Modal<CustomAttrs> {
+
+export default class PostDiscussionViewsModal extends Modal<IPostDiscussionViewsModalAttrs> {
   className(): string {
     return "Modal--small";
   }
 
   title(): Mithril.Children {
-    return app.translator.trans(
-      "michaelbelgium-discussion-views.forum.post.modal_title_text",
-    );
+    return app.translator.trans("michaelbelgium-discussion-views.forum.post.modal_title_text");
   }
 
   content(): Mithril.Children {
@@ -32,7 +28,8 @@ export default class PostDiscussionViewsModal<
       return (
         <li>
           <Link href={app.route.user(user)}>
-            {avatar(user)} {username(user)}
+            <Avatar user={user} />
+            {username(user)}
           </Link>
         </li>
       );

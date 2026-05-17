@@ -1,17 +1,14 @@
-import Modal, { IInternalModalAttrs } from "flarum/common/components/Modal";
+import FormModal, { IFormModalAttrs } from "flarum/common/components/FormModal";
 import Button from "flarum/common/components/Button";
 import Mithril from "mithril";
 import app from "flarum/forum/app";
 import Discussion from "flarum/common/models/Discussion";
 
-export interface IResetDiscussionViewsModalAttrs extends IInternalModalAttrs {
+export interface IResetDiscussionViewsModalAttrs extends IFormModalAttrs {
   discussion: Discussion;
 }
 
-export default class ResetDiscussionViewsModal<
-  CustomAttrs extends
-    IResetDiscussionViewsModalAttrs = IResetDiscussionViewsModalAttrs,
-> extends Modal<CustomAttrs> {
+export default class ResetDiscussionViewsModal extends FormModal<IResetDiscussionViewsModalAttrs> {
   content(): Mithril.Children {
     return (
       <div className="Modal-body">
@@ -29,9 +26,7 @@ export default class ResetDiscussionViewsModal<
                 type: "submit",
                 loading: this.loading,
               },
-              app.translator.trans(
-                "michaelbelgium-discussion-views.forum.modal_resetviews.submit_button",
-              ),
+              app.translator.trans("michaelbelgium-discussion-views.forum.modal_resetviews.submit_button"),
             )}
           </div>
         </div>
@@ -40,9 +35,7 @@ export default class ResetDiscussionViewsModal<
   }
 
   title(): Mithril.Children {
-    return app.translator.trans(
-      "michaelbelgium-discussion-views.forum.modal_resetviews.title",
-    );
+    return app.translator.trans("michaelbelgium-discussion-views.forum.modal_resetviews.title");
   }
 
   className(): string {
@@ -53,10 +46,9 @@ export default class ResetDiscussionViewsModal<
     e.preventDefault();
     this.loading = true;
 
-    this.attrs.discussion.save({ resetViews: true }).catch(() => {
-      this.loaded();
-    });
-
-    this.hide();
+    this.attrs.discussion
+      .save({ resetViews: true })
+      .then(() => this.hide())
+      .catch(() => this.loaded());
   }
 }

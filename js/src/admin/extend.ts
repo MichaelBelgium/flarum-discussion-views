@@ -1,9 +1,9 @@
-import app from "flarum/app";
+import Extend from "flarum/common/extenders";
+import app from "flarum/admin/app";
 
-app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
-  app.extensionData
-    .for("michaelbelgium-discussion-views")
-    .registerSetting({
+export default [
+  new Extend.Admin()
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.track_unique",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.track_unique_label",
@@ -12,8 +12,8 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.track_unique_text",
       ),
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.ignore_crawlers",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.ignore_crawlers_label",
@@ -22,15 +22,15 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.ignore_crawlers_text",
       ),
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.track_guests",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.track_guests_label",
       ),
       type: "boolean",
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.abbr_numbers",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.abbr_numbers_label",
@@ -39,15 +39,15 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.abbr_numbers_text",
       ),
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.show_filter",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.show_filter_label",
       ),
       type: "boolean",
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.show_viewlist",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.show_viewlist_label",
@@ -56,8 +56,8 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.show_viewlist_text",
       ),
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.show_footer_viewlist",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.show_footer_viewlist_label",
@@ -66,8 +66,8 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.show_footer_viewlist_text",
       ),
-    })
-    .registerSetting({
+    }))
+    .setting(() => ({
       setting: "michaelbelgium-discussionviews.max_listcount",
       label: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.max_viewcount_label",
@@ -76,26 +76,26 @@ app.initializers.add("michaelbelgium-admin-discussion-views", (app) => {
       help: app.translator.trans(
         "michaelbelgium-discussion-views.admin.settings.max_viewcount_text",
       ),
-    })
-    .registerPermission(
-      {
+    }))
+    .permission(
+      () => ({
         icon: "far fa-eye",
         label: app.translator.trans(
           "michaelbelgium-discussion-views.admin.permissions.reset_views_label",
         ),
         permission: "discussion.resetViews",
-      },
+      }),
       "moderate",
     )
-    .registerPermission(
-      {
+    .permission(
+      () => ({
         icon: "far fa-eye",
         label: app.translator.trans(
           "michaelbelgium-discussion-views.admin.permissions.view_number_label",
         ),
         permission: "discussion.readViewnumber",
         allowGuest: true,
-      },
+      }),
       "view",
-    );
-});
+    ),
+];
