@@ -8,7 +8,9 @@ use Flarum\User\User;
 
 class DiscussionView extends AbstractModel 
 {
-    protected $dates = ['visited_at'];
+    protected $casts = [
+        'visited_at' => 'datetime',
+    ];
 
     public function discussion() {
         return $this->belongsTo(Discussion::class);

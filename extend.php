@@ -1,24 +1,23 @@
 <?php
 
-use Flarum\Api\Controller\ListDiscussionsController;
-use Flarum\Api\Controller\ShowDiscussionController;
-use Flarum\Api\Serializer\DiscussionSerializer;
+use Flarum\Api\Context;
+use Flarum\Api\Resource\DiscussionResource;
+use Flarum\Api\Schema;
+use Flarum\Api\Sort\SortColumn;
 use Flarum\Database\AbstractModel;
 use Flarum\Discussion\Discussion;
-use Flarum\Discussion\Event\Saving;
-use Flarum\Extend\ApiController;
-use Flarum\Extend\ApiSerializer;
+use Flarum\Extend\ApiResource;
 use Flarum\Extend\Conditional;
 use Flarum\Extend\Event;
-use FoF\MergeDiscussions\Events\MergingDiscussions;
-use Michaelbelgium\Discussionviews\Listeners;
-use Flarum\Extend\Locales;
 use Flarum\Extend\Frontend;
+use Flarum\Extend\Locales;
 use Flarum\Extend\Model;
 use Flarum\Extend\Settings;
 use Flarum\Settings\SettingsRepositoryInterface;
+use FoF\MergeDiscussions\Events\MergingDiscussions;
+use Michaelbelgium\Discussionviews\Listeners;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
-use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
+use Michaelbelgium\Discussionviews\Resource\DiscussionViewResource;
 
 $settings = resolve(SettingsRepositoryInterface::class);
 
@@ -27,26 +26,28 @@ const DV_RELATIONSHIP = 'views'; //$discussion->views()
 const DV_RELATIONSHIP_LATEST = 'latestViews';
 
 return [
-    (new Frontend('forum'))
+    new Frontend('forum')
         ->css(__DIR__ . '/less/extension.less')
         ->js(__DIR__. '/js/dist/forum.js'),
 
-    (new Frontend('admin'))
+    new Frontend('admin')
         ->js(__DIR__ . '/js/dist/admin.js'),
 
     new Locales(__DIR__ . '/locale'),
 
-    (new Model(Discussion::class))
-        ->relationship(DV_RELATIONSHIP, function (AbstractModel $model) {
-            return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
-        })->relationship(DV_RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
-            return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
-        })->relationship(DV_RELATIONSHIP_UNIQUE, function (AbstractModel $model) use ($settings) {
-            return $model->hasMany(DiscussionView::class)->groupBy('user_id')->havingRaw('user_id IS NOT NULL')->orderByRaw('MAX(visited_at) DESC')
-                ->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
-        }),
+    new Model(Discussion::class)
+        ->relationship(DV_RELATIONSHIP, fn (AbstractModel $model) =>
+            $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')
+        )->relationship(DV_RELATIONSHIP_LATEST, fn (AbstractModel $model) =>
+            $model->{DV_RELATIONSHIP}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
+        )->relationship(DV_RELATIONSHIP_UNIQUE, fn (AbstractModel $model) =>
+            $model->hasMany(DiscussionView::class)
+                ->whereNotNull('user_id')
+                ->groupBy('user_id')
+                ->orderByRaw('MAX(visited_at) DESC')
+        ),
 
-    (new Settings)
+    new Settings()
         ->default('michaelbelgium-discussionviews.show_footer_viewlist', false)
         ->default('michaelbelgium-discussionviews.track_guests', true)
         ->default('michaelbelgium-discussionviews.max_listcount', 5)
@@ -55,39 +56,55 @@ return [
         ->default('michaelbelgium-discussionviews.show_filter', true)
         ->default('michaelbelgium-discussionviews.abbr_numbers', false)
         ->default('michaelbelgium-discussionviews.ignore_crawlers', false)
-        ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter', null, true)
-        ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers', null, false)
-        ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist', null, true)
-        ->serializeToForum('showFooterViewList', 'michaelbelgium-discussionviews.show_footer_viewlist', null, false),
+        ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter')
+        ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers')
+        ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist')
+        ->serializeToForum('showFooterViewList', 'michaelbelgium-discussionviews.show_footer_viewlist')
+        ->serializeToForum('maxListCount', 'michaelbelgium-discussionviews.max_listcount'),
 
-    (new ApiSerializer(DiscussionSerializer::class))
-        ->attribute('canReset', function (DiscussionSerializer $serializer, $discussion) {
-            return (bool)$serializer->getActor()->can('resetViews', $discussion);
-        })->attribute('viewCount', function (DiscussionSerializer $serializer, $discussion) {
-            return $discussion->view_count;
-        })->attribute('canViewNumber', function (DiscussionSerializer $serializer, $discussion) {
-            return (bool)$serializer->getActor()->can('readViewnumber', $discussion);
-        })->hasMany(DV_RELATIONSHIP_LATEST, DiscussionViewSerializer::class)
-        ->hasMany(DV_RELATIONSHIP_UNIQUE, DiscussionViewSerializer::class),
+    new ApiResource(DiscussionResource::class)
+        ->fields(fn() => [
+            Schema\Boolean::make('canReset')
+                ->get(fn (Discussion $model, Context $context) => $context->getActor()->can('resetViews', $model)),
 
-    (new ApiController(ShowDiscussionController::class))
-        ->prepareDataForSerialization(Listeners\AddDiscussionViewHandler::class)
-        ->addInclude([
-            DV_RELATIONSHIP_UNIQUE, DV_RELATIONSHIP_UNIQUE . '.user',
-            DV_RELATIONSHIP_LATEST, DV_RELATIONSHIP_LATEST . '.user'
+            Schema\Boolean::make('canViewNumber')
+                ->get(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewnumber', $model)),
+
+            Schema\Integer::make('viewCount')
+                ->property('view_count'),
+
+            Schema\Relationship\ToMany::make(DV_RELATIONSHIP_LATEST)
+                ->includable()
+                ->type('discussionview'),
+
+            Schema\Relationship\ToMany::make(DV_RELATIONSHIP_UNIQUE)
+                ->includable()
+                ->type('discussionview'),
+
+            Schema\Boolean::make('resetViews')
+                ->writable(fn (Discussion $model, Context $context) =>
+                    $context->updating() && $context->getActor()->can('resetViews', $model)
+                )
+                ->set(function (Discussion $model, bool $value, Context $context) {
+                    if ($value) {
+                        $model->views()->delete();
+                        $model->view_count = 0;
+                    }
+                }),
+
+        ])->endpoint('show', fn (\Flarum\Api\Endpoint\Show $endpoint) =>
+            $endpoint->beforeSerialization(function (Context $context, Discussion $discussion) {
+                resolve(Listeners\AddDiscussionViewHandler::class)($context, $discussion);
+            })->addDefaultInclude([DV_RELATIONSHIP_LATEST, DV_RELATIONSHIP_UNIQUE, DV_RELATIONSHIP_UNIQUE.'.user', DV_RELATIONSHIP_LATEST. '.user'])
+        )->sorts(fn () => [
+            SortColumn::make('view_count'),
         ]),
 
-    (new ApiController(ListDiscussionsController::class))
-        ->addSortField('view_count'),
+    new Conditional()
+        ->whenExtensionEnabled('fof-merge-discussions', fn() => [
+            new Event()
+                ->listen(MergingDiscussions::class, Listeners\MergeDiscussionHandler::class),
+        ]),
 
-    (new Event())
-        ->listen(Saving::class, Listeners\SaveDiscussionFromModal::class),
-
-    (new Conditional())
-        ->whenExtensionEnabled('fof-merge-discussions', function() {
-            return [
-                (new Event())
-                    ->listen(MergingDiscussions::class, Listeners\MergeDiscussionHandler::class),
-            ];
-        })
+    new ApiResource(DiscussionViewResource::class),
 ];

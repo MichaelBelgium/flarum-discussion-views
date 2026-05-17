@@ -3,7 +3,7 @@
 namespace Michaelbelgium\Discussionviews\Listeners;
 
 use Carbon\Carbon;
-use Flarum\Api\Controller\ShowDiscussionController;
+use Flarum\Api\Context;
 use Flarum\Discussion\Discussion;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
@@ -12,30 +12,21 @@ use Illuminate\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 class AddDiscussionViewHandler
 {
-    private LoggerInterface $logger;
-    private ExtensionManager $extensionManager;
-    private Dispatcher $events;
-    private SettingsRepositoryInterface $settings;
-
     public function __construct(
-        SettingsRepositoryInterface $settings,
-        Dispatcher $events,
-        ExtensionManager $extensionManager,
-        LoggerInterface $logger
-    ) {
-        $this->settings = $settings;
-        $this->events = $events;
-        $this->extensionManager = $extensionManager;
-        $this->logger = $logger;
-    }
+        private readonly SettingsRepositoryInterface $settings,
+        private readonly Dispatcher $events,
+        private readonly ExtensionManager $extensionManager,
+        private readonly LoggerInterface $logger
+    ) {}
 
-    public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
+    public function __invoke(Context $context, Discussion $discussion): void
     {
+        $request = $context->request;
+
         if($this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
         {
             $crDetect = new CrawlerDetect($request->getHeader('User-Agent'));
@@ -77,8 +68,8 @@ class AddDiscussionViewHandler
         
         $view = new DiscussionView();
         
-        if(!$request->getAttribute('actor')->isGuest()) {
-            $view->user()->associate($request->getAttribute('actor'));
+        if(!$context->getActor()->isGuest()) {
+            $view->user()->associate($context->getActor());
         } elseif(!$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
             return;
         }
@@ -93,6 +84,6 @@ class AddDiscussionViewHandler
         $discussion->increment('view_count');
         $discussion->save();
 
-        $this->events->dispatch(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));
+        $this->events->dispatch(new DiscussionWasViewed($context->getActor(), $discussion));
     }
 }

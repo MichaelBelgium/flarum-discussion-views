@@ -8,23 +8,10 @@ use Flarum\User\User;
 
 class DiscussionWasViewed
 {
-    /** @var User $viewer */
-    private $viewer;
-
-    /** @var Discussion $discussion */
-    private $discussion;
-
-    /**
-     * DiscussionWasViewed constructor.
-     *
-     * @param User $viewer
-     * @param Discussion $discussion
-     */
-    public function __construct(User $viewer, Discussion $discussion)
-    {
-        $this->viewer = $viewer;
-        $this->discussion = $discussion;
-    }
+    public function __construct(
+        private User $viewer,
+        private Discussion $discussion
+    ) {}
 
     public function getViewer()
     {
