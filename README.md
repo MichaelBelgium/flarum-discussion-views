@@ -14,6 +14,18 @@ php flarum migrate
 php flarum cache:clear
 ```
 
+# View record archiving
+
+The extension keeps the latest 1000 detailed view records for each discussion. Older records are counted in `discussion_view_archives`, while the total shown by Flarum remains in `discussions.view_count`.
+
+Archiving is registered with Flarum's scheduler and runs every ten minutes. Make sure the standard Flarum scheduler cron is configured, or run the command manually:
+
+```
+php flarum discussion-views:archive
+```
+
+The `discussion_view_uniques` table only stores indexed discussion/IP pairs. It is required to preserve all-time unique-view tracking after detailed records have been archived.
+
 # Translations
 If you would like to translate this extension to your language, make a PR in the corresponding language pack. 
 

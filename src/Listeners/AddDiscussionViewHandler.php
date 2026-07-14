@@ -8,6 +8,7 @@ use Flarum\Discussion\Discussion;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Arr;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
@@ -21,17 +22,20 @@ class AddDiscussionViewHandler
     private ExtensionManager $extensionManager;
     private Dispatcher $events;
     private SettingsRepositoryInterface $settings;
+    private ConnectionInterface $database;
 
     public function __construct(
         SettingsRepositoryInterface $settings,
         Dispatcher $events,
         ExtensionManager $extensionManager,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ConnectionInterface $database
     ) {
         $this->settings = $settings;
         $this->events = $events;
         $this->extensionManager = $extensionManager;
         $this->logger = $logger;
+        $this->database = $database;
     }
 
     public function __invoke(ShowDiscussionController $controller, Discussion $discussion, ServerRequestInterface $request, $document)
@@ -52,7 +56,7 @@ class AddDiscussionViewHandler
             $bySlug = Arr::get($request->getQueryParams(), 'bySlug', false);
 
             if (!$bySlug) {
-                $this->logger->info(__CLASS__ . ': Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
+                // $this->logger->info(__CLASS__ . ': Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
                 return;
             }
         }
@@ -60,39 +64,65 @@ class AddDiscussionViewHandler
         $clientIp = Arr::get($request->getServerParams(), 'HTTP_CLIENT_IP') ??
             Arr::get($request->getServerParams(), 'HTTP_X_FORWARDED_FOR') ??
             Arr::get($request->getServerParams(), 'REMOTE_ADDR');
+        $trackUnique = $this->settings->get('michaelbelgium-discussionviews.track_unique', false);
 
-        if($this->settings->get('michaelbelgium-discussionviews.track_unique', false))
+        if($trackUnique)
         {
             if($clientIp === null)
             {
-                $this->logger->warning(__CLASS__ . ': Unable to get client IP => not counting this view for discussion '. $discussion->id .'.');
+                // $this->logger->warning(__CLASS__ . ': Unable to get client IP => not counting this view for discussion '. $discussion->id .'.');
                 return;
             }
 
-            $existingViews = $discussion->views()->where('ip', $clientIp)->get();
-            if($existingViews->count() > 0) {
+            if ($discussion->views()->where('ip', $clientIp)->exists()) {
                 return;
             }
         }
-        
-        $view = new DiscussionView();
-        
-        if(!$request->getAttribute('actor')->isGuest()) {
-            $view->user()->associate($request->getAttribute('actor'));
-        } elseif(!$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
+
+        $actor = $request->getAttribute('actor');
+
+        if ($actor->isGuest() && !$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
             return;
         }
 
-        $view->discussion()->associate($discussion);
-        $view->ip = $clientIp;
-        $view->visited_at = Carbon::now();
+        $recorded = $this->database->transaction(function () use ($actor, $clientIp, $discussion, $trackUnique) {
+            $this->database->table('discussions')
+                ->where('id', $discussion->id)
+                ->lockForUpdate()
+                ->first();
 
-        $discussion->views()->save($view);
+            if ($trackUnique) {
+                $inserted = $this->database->table('discussion_view_uniques')->insertOrIgnore([
+                    'discussion_id' => $discussion->id,
+                    'ip' => $clientIp,
+                ]);
 
-        //for the (un)popular filter
-        $discussion->increment('view_count');
-        $discussion->save();
+                // A row already present means this IP was seen before and may have been archived.
+                if ($inserted === 0) {
+                    return false;
+                }
+            }
 
-        $this->events->dispatch(new DiscussionWasViewed($request->getAttribute('actor'), $discussion));
+            $view = new DiscussionView();
+
+            if (!$actor->isGuest()) {
+                $view->user()->associate($actor);
+            }
+
+            $view->discussion()->associate($discussion);
+            $view->ip = $clientIp;
+            $view->visited_at = Carbon::now();
+
+            $discussion->views()->save($view);
+            $discussion->increment('view_count');
+
+            return true;
+        });
+
+        if (!$recorded) {
+            return;
+        }
+
+        $this->events->dispatch(new DiscussionWasViewed($actor, $discussion));
     }
 }

@@ -9,6 +9,7 @@ use Flarum\Discussion\Event\Saving;
 use Flarum\Extend\ApiController;
 use Flarum\Extend\ApiSerializer;
 use Flarum\Extend\Conditional;
+use Flarum\Extend\Console;
 use Flarum\Extend\Event;
 use FoF\MergeDiscussions\Events\MergingDiscussions;
 use Michaelbelgium\Discussionviews\Listeners;
@@ -19,6 +20,8 @@ use Flarum\Extend\Settings;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Serializers\DiscussionViewSerializer;
+use Michaelbelgium\Discussionviews\Console\ArchiveDiscussionViewsCommand;
+use Illuminate\Console\Scheduling\Event as ScheduledEvent;
 
 $settings = resolve(SettingsRepositoryInterface::class);
 
@@ -38,7 +41,7 @@ return [
 
     (new Model(Discussion::class))
         ->relationship(DV_RELATIONSHIP, function (AbstractModel $model) {
-            return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC');
+            return $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')->orderBy('id', 'DESC');
         })->relationship(DV_RELATIONSHIP_LATEST, function (AbstractModel $model) use ($settings) {
             return $model->views()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5));
         })->relationship(DV_RELATIONSHIP_UNIQUE, function (AbstractModel $model) use ($settings) {
@@ -79,6 +82,12 @@ return [
 
     (new ApiController(ListDiscussionsController::class))
         ->addSortField('view_count'),
+
+    (new Console())
+        ->command(ArchiveDiscussionViewsCommand::class)
+        ->schedule(ArchiveDiscussionViewsCommand::class, function (ScheduledEvent $event) {
+            $event->everyTenMinutes()->withoutOverlapping(30)->onOneServer();
+        }),
 
     (new Event())
         ->listen(Saving::class, Listeners\SaveDiscussionFromModal::class),
