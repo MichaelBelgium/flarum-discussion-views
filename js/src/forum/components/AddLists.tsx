@@ -66,18 +66,19 @@ export default function () {
 
     if (!firstPost) return; //if first post isn't loaded
 
-    const limit = app.forum.attribute('maxListCount') as number ?? 5;
+    const parsedLimit = parseInt(app.forum.attribute<string>('maxListCount'));
+    const limit = isNaN(parsedLimit) ? 5 : parsedLimit;
     const views = discussion.uniqueViews();
 
     if (firstPost.id() == post.id() && views.length > 0) {
-      const names = views.map((view) =>
+      const names = views.slice(0, limit).map((view) =>
         Link.component(
           { href: app.route.user(view.user()) },
           view.user() === app.session.user
             ? app.translator.trans("michaelbelgium-discussion-views.forum.post.you")
             : username(view.user()),
         ),
-      ).splice(0, limit);
+      );
 
       if (views.length > limit) {
         names.push(Link.component(
