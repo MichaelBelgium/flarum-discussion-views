@@ -41,8 +41,10 @@ return [
             $model->{$relationship}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
         )->relationship($relationshipUnique, fn (AbstractModel $model) =>
             $model->hasMany(DiscussionView::class)
+                ->select(['discussion_id', 'user_id'])
+                ->selectRaw('MAX(id) as id, MAX(visited_at) as visited_at')
                 ->whereNotNull('user_id')
-                ->groupBy('user_id')
+                ->groupBy('discussion_id', 'user_id')
                 ->orderByRaw('MAX(visited_at) DESC')
         ),
 
