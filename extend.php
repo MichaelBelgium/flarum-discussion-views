@@ -20,10 +20,9 @@ use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Resource\DiscussionViewResource;
 
 $settings = resolve(SettingsRepositoryInterface::class);
-
-const DV_RELATIONSHIP_UNIQUE = 'uniqueViews'; //discussion->uniqueViews()
-const DV_RELATIONSHIP = 'views'; //$discussion->views()
-const DV_RELATIONSHIP_LATEST = 'latestViews';
+$relationshipUnique = 'uniqueViews'; //discussion->uniqueViews()
+$relationship = 'views'; //$discussion->views()
+$relationshipLatest = 'latestViews';
 
 return [
     new Frontend('forum')
@@ -36,11 +35,11 @@ return [
     new Locales(__DIR__ . '/locale'),
 
     new Model(Discussion::class)
-        ->relationship(DV_RELATIONSHIP, fn (AbstractModel $model) =>
+        ->relationship($relationship, fn (AbstractModel $model) =>
             $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')
-        )->relationship(DV_RELATIONSHIP_LATEST, fn (AbstractModel $model) =>
-            $model->{DV_RELATIONSHIP}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
-        )->relationship(DV_RELATIONSHIP_UNIQUE, fn (AbstractModel $model) =>
+        )->relationship($relationshipLatest, fn (AbstractModel $model) =>
+            $model->{$relationship}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
+        )->relationship($relationshipUnique, fn (AbstractModel $model) =>
             $model->hasMany(DiscussionView::class)
                 ->whereNotNull('user_id')
                 ->groupBy('user_id')
@@ -73,11 +72,11 @@ return [
             Schema\Integer::make('viewCount')
                 ->property('view_count'),
 
-            Schema\Relationship\ToMany::make(DV_RELATIONSHIP_LATEST)
+            Schema\Relationship\ToMany::make($relationshipLatest)
                 ->includable()
                 ->type('discussionview'),
 
-            Schema\Relationship\ToMany::make(DV_RELATIONSHIP_UNIQUE)
+            Schema\Relationship\ToMany::make($relationshipUnique)
                 ->includable()
                 ->type('discussionview'),
 
@@ -95,7 +94,7 @@ return [
         ])->endpoint('show', fn (\Flarum\Api\Endpoint\Show $endpoint) =>
             $endpoint->beforeSerialization(function (Context $context, Discussion $discussion) {
                 resolve(Listeners\AddDiscussionViewHandler::class)($context, $discussion);
-            })->addDefaultInclude([DV_RELATIONSHIP_LATEST, DV_RELATIONSHIP_UNIQUE, DV_RELATIONSHIP_UNIQUE.'.user', DV_RELATIONSHIP_LATEST. '.user'])
+            })->addDefaultInclude([$relationshipLatest, $relationshipUnique, $relationshipUnique.'.user', $relationshipLatest. '.user'])
         )->sorts(fn () => [
             SortColumn::make('view_count'),
         ]),
