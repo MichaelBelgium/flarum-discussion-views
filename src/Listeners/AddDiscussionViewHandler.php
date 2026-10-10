@@ -26,6 +26,11 @@ class AddDiscussionViewHandler
     public function __invoke(Context $context, Discussion $discussion): void
     {
         $request = $context->request;
+        $actor = $context->getActor();
+
+        if ($actor->isGuest() && !$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
+            return;
+        }
 
         if($this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
         {
@@ -60,21 +65,16 @@ class AddDiscussionViewHandler
                 return;
             }
 
-            $existingViews = $discussion->views()->where('ip', $clientIp)->get();
-            if($existingViews->count() > 0) {
+            if($discussion->views()->where('ip', $clientIp)->exists())
                 return;
-            }
-        }
-        
-        $view = new DiscussionView();
-        
-        if(!$context->getActor()->isGuest()) {
-            $view->user()->associate($context->getActor());
-        } elseif(!$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
-            return;
         }
 
-        $view->discussion()->associate($discussion);
+        $view = new DiscussionView();
+
+        if(!$actor->isGuest()) {
+            $view->user()->associate($actor);
+        }
+
         $view->ip = $clientIp;
         $view->visited_at = Carbon::now();
 
@@ -82,8 +82,7 @@ class AddDiscussionViewHandler
 
         //for the (un)popular filter
         $discussion->increment('view_count');
-        $discussion->save();
 
-        $this->events->dispatch(new DiscussionWasViewed($context->getActor(), $discussion));
+        $this->events->dispatch(new DiscussionWasViewed($actor, $discussion));
     }
 }
