@@ -29,7 +29,7 @@ class AddDiscussionViewHandler
 
         if($this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
         {
-            $crDetect = new CrawlerDetect($request->getHeader('User-Agent'));
+            $crDetect = new CrawlerDetect(userAgent: $request->getHeaderLine('User-Agent'));
 
             if ($crDetect->isCrawler()) {
                 return;
