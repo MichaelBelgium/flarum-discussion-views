@@ -72,7 +72,10 @@ return [
                 ->get(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewnumber', $model)),
 
             Schema\Integer::make('viewCount')
-                ->property('view_count'),
+                ->property('view_count')
+                ->visible(fn (Discussion $model, Context $context) =>
+                    $context->getActor()->can('readViewnumber', $model) || $context->getActor()->can('resetViews', $model)
+                ),
 
             Schema\Relationship\ToMany::make($relationshipLatest)
                 ->includable()
@@ -83,13 +86,14 @@ return [
                 ->type('discussionview'),
 
             Schema\Boolean::make('resetViews')
+                ->visible(false)
                 ->writable(fn (Discussion $model, Context $context) =>
                     $context->updating() && $context->getActor()->can('resetViews', $model)
                 )
-                ->set(function (Discussion $model, bool $value, Context $context) {
+                ->set(function (Discussion $model, bool $value) {
                     if ($value) {
-                        $model->views()->delete();
                         $model->view_count = 0;
+                        $model->afterSave(fn (Discussion $model) => $model->views()->delete());
                     }
                 }),
 
