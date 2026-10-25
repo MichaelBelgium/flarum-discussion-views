@@ -9,6 +9,7 @@ export default [
     .attribute<boolean>("canReset")
     .attribute<number>("viewCount")
     .attribute<boolean>("canViewNumber")
+    .attribute<boolean>("canViewList")
     .hasMany<DiscussionView>("latestViews")
     .hasMany<DiscussionView>("uniqueViews"),
 ];

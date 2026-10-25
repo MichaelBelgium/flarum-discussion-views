@@ -71,6 +71,9 @@ return [
             Schema\Boolean::make('canViewNumber')
                 ->get(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewnumber', $model)),
 
+            Schema\Boolean::make('canViewList')
+                ->get(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewlist', $model)),
+
             Schema\Integer::make('viewCount')
                 ->property('view_count')
                 ->visible(fn (Discussion $model, Context $context) =>
@@ -79,10 +82,12 @@ return [
 
             Schema\Relationship\ToMany::make($relationshipLatest)
                 ->includable()
+                ->visible(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewlist', $model))
                 ->type('discussionview'),
 
             Schema\Relationship\ToMany::make($relationshipUnique)
                 ->includable()
+                ->visible(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewlist', $model))
                 ->type('discussionview'),
 
             Schema\Boolean::make('resetViews')

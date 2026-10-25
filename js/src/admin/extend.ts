@@ -97,5 +97,16 @@ export default [
         allowGuest: true,
       }),
       "view",
+    )
+    .permission(
+      () => ({
+        icon: "far fa-eye",
+        label: app.translator.trans(
+          "michaelbelgium-discussion-views.admin.permissions.view_list_label",
+        ),
+        permission: "discussion.readViewlist",
+        allowGuest: true,
+      }),
+      "view",
     ),
 ];

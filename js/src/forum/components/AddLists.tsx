@@ -14,7 +14,7 @@ import PostDiscussionViewsModal from "./PostDiscussionViewsModal";
 
 export default function () {
   extend(DiscussionPage.prototype, "sidebarItems", function (items) {
-    if (app.forum.attribute("showViewList") == 0) return;
+    if (app.forum.attribute("showViewList") == 0 || !this.discussion!.canViewList()) return;
 
     const views = this.discussion!.latestViews();
     const viewList = new ItemList();
@@ -62,6 +62,9 @@ export default function () {
 
     const post = this.attrs.post;
     const discussion = post.discussion();
+
+    if (!discussion.canViewList()) return;
+
     const firstPost = discussion.firstPost();
 
     if (!firstPost) return; //if first post isn't loaded

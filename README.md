@@ -25,6 +25,7 @@ If you would like to translate this extension to your language, make a PR in the
 * Adds new permissions:
     * Reset the viewcount of a discussion (default to admins)
     * View the viewcount of a discussion (default to admins)
+    * View the sidebar and footer viewlists of a discussion (default to everyone)
 
 # Media
 
