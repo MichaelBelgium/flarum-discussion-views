@@ -48,7 +48,7 @@ class AddDiscussionViewHandler
             $bySlug = Arr::get($request->getQueryParams(), 'bySlug', false);
 
             if (!$bySlug) {
-                $this->logger->info(__CLASS__ . ': Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
+                $this->logger->debug(__CLASS__ . ': Not counting view to discussion '. $discussion->id .' because it wasn\'t a manual visit to the discussion page');
                 return;
             }
         }
