@@ -28,13 +28,10 @@ class DiscussionViewResource extends Resource\AbstractDatabaseResource
 
             Schema\Relationship\ToOne::make('user')
                 ->includable()
-                ->writableOnCreate()
-                ->requiredOnCreate()
                 ->type('users'),
 
             Schema\Relationship\ToOne::make('discussion')
                 ->includable()
-                ->requiredOnCreate()
                 ->type('discussions'),
         ];
     }
