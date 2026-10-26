@@ -31,8 +31,8 @@ class AddDiscussionViewHandler
         if ($actor->isGuest() && !$this->settings->get('michaelbelgium-discussionviews.track_guests', true)) {
             return;
         }
-
-        if($this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
+        
+        if($actor->isGuest() && $this->settings->get('michaelbelgium-discussionviews.ignore_crawlers', false))
         {
             $crDetect = new CrawlerDetect(userAgent: $request->getHeaderLine('User-Agent'));
 
