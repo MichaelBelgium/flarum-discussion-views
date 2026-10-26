@@ -2,14 +2,9 @@
 
 namespace Michaelbelgium\Discussionviews\Resource;
 
-use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;
-use Flarum\Api\Sort\SortColumn;
-use Illuminate\Database\Eloquent\Builder;
-use MichaelBelgium;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
-use Tobyz\JsonApiServer\Context as OriginalContext;
 
 /**
  * @extends Resource\AbstractDatabaseResource<DiscussionView>

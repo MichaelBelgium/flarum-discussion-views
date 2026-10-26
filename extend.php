@@ -24,6 +24,16 @@ $relationshipUnique = 'uniqueViews'; //discussion->uniqueViews()
 $relationship = 'views'; //$discussion->views()
 $relationshipLatest = 'latestViews';
 
+$defaultIncludes = [];
+
+if ($settings->get('michaelbelgium-discussionviews.show_viewlist', true)) {
+    array_push($defaultIncludes, $relationshipLatest, $relationshipLatest . '.user');
+}
+
+if ($settings->get('michaelbelgium-discussionviews.show_footer_viewlist', false)) {
+    array_push($defaultIncludes, $relationshipUnique, $relationshipUnique . '.user');
+}
+
 return [
     new Frontend('forum')
         ->css(__DIR__ . '/less/extension.less')
@@ -105,7 +115,7 @@ return [
         ])->endpoint('show', fn (\Flarum\Api\Endpoint\Show $endpoint) =>
             $endpoint->beforeSerialization(function (Context $context, Discussion $discussion) {
                 resolve(Listeners\AddDiscussionViewHandler::class)($context, $discussion);
-            })->addDefaultInclude([$relationshipLatest, $relationshipUnique, $relationshipUnique.'.user', $relationshipLatest. '.user'])
+            })->addDefaultInclude($defaultIncludes)
         )->sorts(fn () => [
             SortColumn::make('view_count'),
         ]),
