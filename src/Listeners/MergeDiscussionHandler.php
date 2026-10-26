@@ -13,7 +13,6 @@ class MergeDiscussionHandler
         $targetDiscussion = $event->discussion;
 
         $targetDiscussion->increment('view_count', $event->mergedDiscussions->sum('view_count'));
-        $targetDiscussion->save();
 
         $event->mergedDiscussions->each(function(Discussion $discussion) use ($targetDiscussion) {
             $discussion->views()->update(['discussion_id' => $targetDiscussion->id]);

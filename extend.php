@@ -46,7 +46,7 @@ return [
 
     new Model(Discussion::class)
         ->relationship($relationship, fn (AbstractModel $model) =>
-            $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')
+            $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')->orderBy('id', 'DESC')
         )->relationship($relationshipLatest, fn (AbstractModel $model) =>
             $model->{$relationship}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
         )->relationship($relationshipUnique, fn (AbstractModel $model) =>
