@@ -18,9 +18,9 @@ use FoF\MergeDiscussions\Events\MergingDiscussions;
 use Michaelbelgium\Discussionviews\Listeners;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Resource\DiscussionViewResource;
+use Michaelbelgium\Discussionviews\UniqueViewers;
 
 $settings = resolve(SettingsRepositoryInterface::class);
-$relationshipUnique = 'uniqueViews'; //discussion->uniqueViews()
 $relationship = 'views'; //$discussion->views()
 $relationshipLatest = 'latestViews';
 
@@ -28,10 +28,6 @@ $defaultIncludes = [];
 
 if ($settings->get('michaelbelgium-discussionviews.show_viewlist', true)) {
     array_push($defaultIncludes, $relationshipLatest, $relationshipLatest . '.user');
-}
-
-if ($settings->get('michaelbelgium-discussionviews.show_footer_viewlist', false)) {
-    array_push($defaultIncludes, $relationshipUnique, $relationshipUnique . '.user');
 }
 
 return [
@@ -49,13 +45,6 @@ return [
             $model->hasMany(DiscussionView::class)->orderBy('visited_at', 'DESC')->orderBy('id', 'DESC')
         )->relationship($relationshipLatest, fn (AbstractModel $model) =>
             $model->{$relationship}()->limit($settings->get('michaelbelgium-discussionviews.max_listcount', 5))
-        )->relationship($relationshipUnique, fn (AbstractModel $model) =>
-            $model->hasMany(DiscussionView::class)
-                ->select(['discussion_id', 'user_id'])
-                ->selectRaw('MAX(id) as id, MAX(visited_at) as visited_at')
-                ->whereNotNull('user_id')
-                ->groupBy('discussion_id', 'user_id')
-                ->orderByRaw('MAX(visited_at) DESC')
         ),
 
     new Settings()
@@ -95,10 +84,13 @@ return [
                 ->visible(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewlist', $model))
                 ->type('discussionview'),
 
-            Schema\Relationship\ToMany::make($relationshipUnique)
-                ->includable()
-                ->visible(fn (Discussion $model, Context $context) => $context->getActor()->can('readViewlist', $model))
-                ->type('discussionview'),
+            Schema\Arr::make('uniqueViewers')
+                ->visible(fn (Discussion $model, Context $context) =>
+                    $context->showing(DiscussionResource::class)
+                    && $settings->get('michaelbelgium-discussionviews.show_footer_viewlist', false)
+                    && $context->getActor()->can('readViewlist', $model)
+                )
+                ->get(fn (Discussion $model) => resolve(UniqueViewers::class)($model)),
 
             Schema\Boolean::make('resetViews')
                 ->visible(false)

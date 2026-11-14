@@ -11,6 +11,7 @@ import Link from "flarum/common/components/Link";
 import DiscussionPage from "flarum/forum/components/DiscussionPage";
 import FieldSet from "flarum/common/components/FieldSet";
 import PostDiscussionViewsModal from "./PostDiscussionViewsModal";
+import viewerToUser from "../utils/viewerToUser";
 
 export default function () {
   extend(DiscussionPage.prototype, "sidebarItems", function (items) {
@@ -20,13 +21,12 @@ export default function () {
     const viewList = new ItemList();
 
     views.forEach((view, key) => {
-      const userName = view.user() === false ?
-          app.translator.trans("michaelbelgium-discussion-views.forum.viewlist.guest") :
-          username(view.user());
+      const user = view.user() || null;
+      const userName = user ? username(user) : app.translator.trans("michaelbelgium-discussion-views.forum.viewlist.guest");
 
       let listitem = (
         <div className="item-lastUser-content">
-          <Avatar user={view.user()} />
+          <Avatar user={user} />
           <div>
             {userName}
             <span className="lastUser-visited" title={view.visitedAt()!.toLocaleString()}>
@@ -36,11 +36,8 @@ export default function () {
         </div>
       );
 
-      if (view.user() !== false) {
-        listitem = Link.component(
-          { href: app.route.user(view.user()) },
-          listitem,
-        );
+      if (user) {
+        listitem = Link.component({ href: app.route.user(user) }, listitem);
       }
 
       viewList.add("lastUser-" + key, listitem);
@@ -71,17 +68,19 @@ export default function () {
 
     const parsedLimit = parseInt(app.forum.attribute<string>('maxListCount'));
     const limit = isNaN(parsedLimit) ? 5 : parsedLimit;
-    const views = discussion.uniqueViews();
+    const views = discussion.uniqueViewers() ?? [];
 
     if (firstPost.id() == post.id() && views.length > 0) {
-      const names = views.slice(0, limit).map((view) =>
-        Link.component(
-          { href: app.route.user(view.user()) },
-          view.user() === app.session.user
+      const names = views.slice(0, limit).map((viewer) => {
+        const user = viewerToUser(viewer);
+
+        return Link.component(
+          { href: app.route.user(user) },
+          viewer.id === app.session.user?.id()
             ? app.translator.trans("michaelbelgium-discussion-views.forum.post.you")
-            : username(view.user()),
-        ),
-      );
+            : username(user),
+        );
+      });
 
       if (views.length > limit) {
         names.push(Link.component(

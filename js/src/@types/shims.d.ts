@@ -1,5 +1,6 @@
 import Discussion from "flarum/common/models/Discussion";
 import DiscussionView from "../forum/models/DiscussionView";
+import type { UniqueViewer } from "../forum/utils/viewerToUser";
 
 declare module "flarum/common/models/Discussion" {
   export default interface Discussion {
@@ -8,6 +9,6 @@ declare module "flarum/common/models/Discussion" {
     canViewNumber(): boolean;
     canViewList(): boolean;
     latestViews(): DiscussionView[];
-    uniqueViews(): DiscussionView[];
+    uniqueViewers(): UniqueViewer[] | undefined;
   }
 }
