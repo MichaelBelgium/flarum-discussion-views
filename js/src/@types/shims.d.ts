@@ -6,6 +6,7 @@ declare module "flarum/common/models/Discussion" {
     canReset(): boolean;
     viewCount(): number;
     canViewNumber(): boolean;
+    canViewList(): boolean;
     latestViews(): DiscussionView[];
     uniqueViews(): DiscussionView[];
   }

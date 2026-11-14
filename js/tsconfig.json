@@ -6,7 +6,7 @@
   // access to `dayjs` and `$` in the global namespace.
   "include": ["src/**/*", "../vendor/flarum/core/js/dist-typings/@types/**/*"],
   "files": [
-    "@types/shims.d.ts"
+    "src/@types/shims.d.ts"
   ],
   "compilerOptions": {
     // This will output typings to `dist-typings`
