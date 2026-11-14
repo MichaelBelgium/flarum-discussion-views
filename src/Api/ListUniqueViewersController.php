@@ -3,7 +3,9 @@
 namespace Michaelbelgium\Discussionviews\Api;
 
 use Flarum\Discussion\DiscussionRepository;
+use Flarum\Http\Exception\RouteNotFoundException;
 use Flarum\Http\RequestUtil;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Arr;
 use Laminas\Diactoros\Response\JsonResponse;
 use Michaelbelgium\Discussionviews\UniqueViewers;
@@ -18,11 +20,17 @@ readonly class ListUniqueViewersController implements RequestHandlerInterface
 {
     public function __construct(
         private UniqueViewers $uniqueViewers,
-        private DiscussionRepository $discussions
+        private DiscussionRepository $discussions,
+        private SettingsRepositoryInterface $settings
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // The list is only exposed through the footer viewlist; don't serve it when that is disabled.
+        if (! $this->settings->get('michaelbelgium-discussionviews.show_footer_viewlist')) {
+            throw new RouteNotFoundException();
+        }
+
         $actor = RequestUtil::getActor($request);
 
         // 404 for discussions the actor can't see.

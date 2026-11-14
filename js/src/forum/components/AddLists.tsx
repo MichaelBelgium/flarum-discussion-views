@@ -69,7 +69,7 @@ export default function () {
     // The API only sends the first few viewers plus the total; the modal loads the rest.
     const { total, viewers: views } = discussion.uniqueViewers() ?? { total: 0, viewers: [] };
 
-    if (firstPost.id() == post.id() && views.length > 0) {
+    if (firstPost.id() == post.id() && total > 0) {
       const names = views.map((viewer) => {
         const user = viewerToUser(viewer);
 

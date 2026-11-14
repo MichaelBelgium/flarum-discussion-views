@@ -28,8 +28,10 @@ export default class PostDiscussionViewsModal extends Modal<IPostDiscussionViews
   oninit(vnode: Mithril.Vnode<IPostDiscussionViewsModalAttrs, this>) {
     super.oninit(vnode);
 
-    this.apply(this.attrs.post.discussion()!.uniqueViewers()!);
-    this.loadMore();
+    const initial = this.attrs.post.discussion()?.uniqueViewers();
+
+    if (initial) this.apply(initial);
+    if (!initial || this.hasMore()) this.loadMore();
   }
 
   hasMore(): boolean {

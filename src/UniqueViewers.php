@@ -24,25 +24,32 @@ class UniqueViewers
      */
     public function page(Discussion $discussion, User $actor, int $offset, int $limit): array
     {
-        $rows = $this->groupedViewers($discussion->id)
+        $query = $this->groupedViewers($discussion->id, $actor);
+
+        $rows = (clone $query)
             ->selectRaw('COUNT(*) OVER () as total')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
+        // The window count only exists on returned rows; an empty page (limit 0 or offset past the end) needs a real count.
+        $total = $rows->isEmpty()
+            ? $query->toBase()->getCountForPagination()
+            : (int) $rows->first()->total;
+
         return [
-            'total' => (int) ($rows->first()?->total ?? 0),
+            'total' => $total,
             'viewers' => $this->viewers($rows->pluck('user_id'), $actor),
             'nextOffset' => $offset + $rows->count(),
         ];
     }
 
-    private function groupedViewers(int $discussion_id): Builder
+    private function groupedViewers(int $discussion_id, User $actor): Builder
     {
         return DiscussionView::query()
             ->select('user_id')
             ->where('discussion_id', $discussion_id)
-            ->whereNotNull('user_id')
+            ->whereIn('user_id', User::query()->whereVisibleTo($actor)->select('id'))
             ->groupBy('user_id')
             ->orderByRaw('MAX(visited_at) DESC')
             ->orderByDesc('user_id');
@@ -60,10 +67,9 @@ class UniqueViewers
 
         return $userIds
             ->map(fn ($id) => $users->get($id))
-            ->filter() // exclude any falsy values
+            ->filter() // a user could have become invisible between both queries
             ->map(fn (User $user) => [
                 'id' => (string) $user->id,
-                'username' => $user->username,
                 'displayName' => $user->display_name,
                 'slug' => $slugDriver->toSlug($user),
                 'avatarUrl' => $user->avatar_url,
