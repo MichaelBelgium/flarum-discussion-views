@@ -12,9 +12,11 @@ use Flarum\Extend\Event;
 use Flarum\Extend\Frontend;
 use Flarum\Extend\Locales;
 use Flarum\Extend\Model;
+use Flarum\Extend\Routes;
 use Flarum\Extend\Settings;
 use Flarum\Settings\SettingsRepositoryInterface;
 use FoF\MergeDiscussions\Events\MergingDiscussions;
+use Michaelbelgium\Discussionviews\Api\ListUniqueViewersController;
 use Michaelbelgium\Discussionviews\Listeners;
 use Michaelbelgium\Discussionviews\Models\DiscussionView;
 use Michaelbelgium\Discussionviews\Resource\DiscussionViewResource;
@@ -59,8 +61,7 @@ return [
         ->serializeToForum('toggleFilter', 'michaelbelgium-discussionviews.show_filter')
         ->serializeToForum('abbrNumber', 'michaelbelgium-discussionviews.abbr_numbers')
         ->serializeToForum('showViewList', 'michaelbelgium-discussionviews.show_viewlist')
-        ->serializeToForum('showFooterViewList', 'michaelbelgium-discussionviews.show_footer_viewlist')
-        ->serializeToForum('maxListCount', 'michaelbelgium-discussionviews.max_listcount'),
+        ->serializeToForum('showFooterViewList', 'michaelbelgium-discussionviews.show_footer_viewlist'),
 
     new ApiResource(DiscussionResource::class)
         ->fields(fn() => [
@@ -87,10 +88,17 @@ return [
             Schema\Arr::make('uniqueViewers')
                 ->visible(fn (Discussion $model, Context $context) =>
                     $context->showing(DiscussionResource::class)
-                    && $settings->get('michaelbelgium-discussionviews.show_footer_viewlist', false)
+                    && $settings->get('michaelbelgium-discussionviews.show_footer_viewlist')
                     && $context->getActor()->can('readViewlist', $model)
                 )
-                ->get(fn (Discussion $model) => resolve(UniqueViewers::class)($model)),
+                ->get(fn (Discussion $model, Context $context) =>
+                    resolve(UniqueViewers::class)->page(
+                        $model,
+                        $context->getActor(),
+                        0,
+                        (int) $settings->get('michaelbelgium-discussionviews.max_listcount')
+                    )
+                ),
 
             Schema\Boolean::make('resetViews')
                 ->visible(false)
@@ -119,4 +127,7 @@ return [
         ]),
 
     new ApiResource(DiscussionViewResource::class),
+
+    new Routes('api')
+        ->get('/discussions/{id}/viewers', 'discussions.viewers', ListUniqueViewersController::class),
 ];

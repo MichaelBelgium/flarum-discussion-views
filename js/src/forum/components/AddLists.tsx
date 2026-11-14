@@ -66,12 +66,11 @@ export default function () {
 
     if (!firstPost) return; //if first post isn't loaded
 
-    const parsedLimit = parseInt(app.forum.attribute<string>('maxListCount'));
-    const limit = isNaN(parsedLimit) ? 5 : parsedLimit;
-    const views = discussion.uniqueViewers() ?? [];
+    // The API only sends the first few viewers plus the total; the modal loads the rest.
+    const { total, viewers: views } = discussion.uniqueViewers() ?? { total: 0, viewers: [] };
 
     if (firstPost.id() == post.id() && views.length > 0) {
-      const names = views.slice(0, limit).map((viewer) => {
+      const names = views.map((viewer) => {
         const user = viewerToUser(viewer);
 
         return Link.component(
@@ -82,7 +81,7 @@ export default function () {
         );
       });
 
-      if (views.length > limit) {
+      if (total > views.length) {
         names.push(Link.component(
           {
             href: "#",
@@ -91,19 +90,17 @@ export default function () {
               app.modal.show(PostDiscussionViewsModal, { post });
             }
           },
-          app.translator.trans("michaelbelgium-discussion-views.forum.post.others_link", { count: views.length - limit }),
+          app.translator.trans("michaelbelgium-discussion-views.forum.post.others_link", { count: total - views.length }),
         ));
       }
 
-      if (names.length > 0) {
-        items.add(
-          "viewed",
-          <div className="Post-Discussion-viewedBy">
-            <Icon name="fas fa-eye" />
-            {app.translator.trans("michaelbelgium-discussion-views.forum.post.viewed_by", { users: punctuateSeries(names) })}
-          </div>,
-        );
-      }
+      items.add(
+        "viewed",
+        <div className="Post-Discussion-viewedBy">
+          <Icon name="fas fa-eye" />
+          {app.translator.trans("michaelbelgium-discussion-views.forum.post.viewed_by", { users: punctuateSeries(names) })}
+        </div>,
+      );
     }
   });
 }

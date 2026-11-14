@@ -7,7 +7,13 @@ export interface UniqueViewer {
   displayName: string;
   slug: string;
   avatarUrl: string | null;
-  avatarSrcset: string | null;
+}
+
+/** The discussion's `uniqueViewers` attribute: the first few viewers plus the total amount. */
+export interface UniqueViewers {
+  total: number;
+  viewers: UniqueViewer[];
+  nextOffset: number;
 }
 
 /**
@@ -25,7 +31,6 @@ export default function viewerToUser(viewer: UniqueViewer): User {
         displayName: viewer.displayName,
         slug: viewer.slug,
         avatarUrl: viewer.avatarUrl,
-        avatarSrcset: viewer.avatarSrcset,
       },
     })
   );
